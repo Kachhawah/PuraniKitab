@@ -1384,7 +1384,7 @@
   <audio id="chaiSipAudio" preload="auto" src="chai-sip.m4a"></audio>
   <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
        aria-label="चाय की चुस्की">
-    <img class="chai-glass" id="chaiGlass" src="chai.png" alt="चाय का गिलास">
+    <img class="chai-glass" id="chaiGlass" src="chai.png" alt="चाय का गिलास" draggable="false">
   </div>
 
 
@@ -2170,100 +2170,68 @@
   });
 
 
-  /* ===== Chai drag: robust mouse + touch, click only when not dragged ===== */
+  /* ===== Chai drag: mouse + touch, no accidental sip on drag ===== */
   (function(){
-    const cup = document.getElementById('chaiCorner');
+    const cup=document.getElementById('chaiCorner');
     if(!cup) return;
+    let dragging=false, moved=false, suppress=false;
+    let startX=0,startY=0,offX=0,offY=0;
 
-    let active = false;
-    let moved = false;
-    let pointerId = null;
-    let startX = 0, startY = 0;
-    let offsetX = 0, offsetY = 0;
-    let suppressClickUntil = 0;
-
+    function point(e){
+      if(e.touches && e.touches.length) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
+      if(e.changedTouches && e.changedTouches.length) return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+      return {x:e.clientX,y:e.clientY};
+    }
     function begin(e){
-      if(e.pointerType === 'mouse' && e.button !== 0) return;
-      const r = cup.getBoundingClientRect();
-      active = true;
-      moved = false;
-      pointerId = e.pointerId;
-      startX = e.clientX;
-      startY = e.clientY;
-      offsetX = e.clientX - r.left;
-      offsetY = e.clientY - r.top;
+      if(e.type==='mousedown' && e.button!==0) return;
+      const p=point(e), r=cup.getBoundingClientRect();
+      dragging=true; moved=false; startX=p.x; startY=p.y; offX=p.x-r.left; offY=p.y-r.top;
       cup.classList.add('is-dragging');
       e.preventDefault();
       e.stopPropagation();
     }
-
     function move(e){
-      if(!active || e.pointerId !== pointerId) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      if(!moved && Math.hypot(dx,dy) > 5) moved = true;
+      if(!dragging) return;
+      const p=point(e), dx=p.x-startX, dy=p.y-startY;
+      if(!moved && Math.hypot(dx,dy)>8) moved=true;
       if(!moved) return;
-
-      const x = Math.max(0, Math.min(window.innerWidth - cup.offsetWidth, e.clientX - offsetX));
-      const y = Math.max(0, Math.min(window.innerHeight - cup.offsetHeight, e.clientY - offsetY));
-      cup.style.left = x + 'px';
-      cup.style.top = y + 'px';
-      cup.style.right = 'auto';
-      cup.style.bottom = 'auto';
-      cup.style.transform = 'none';
+      const x=Math.max(0,Math.min(innerWidth-cup.offsetWidth,p.x-offX));
+      const y=Math.max(0,Math.min(innerHeight-cup.offsetHeight,p.y-offY));
+      cup.style.left=x+'px'; cup.style.top=y+'px'; cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
       e.preventDefault();
+      e.stopPropagation();
     }
-
     function finish(e){
-      if(!active || e.pointerId !== pointerId) return;
-      const didDrag = moved;
-      active = false;
-      moved = false;
-      pointerId = null;
-      cup.classList.remove('is-dragging');
-
+      if(!dragging) return;
+      const didDrag=moved;
+      dragging=false; moved=false; cup.classList.remove('is-dragging');
       if(didDrag){
-        suppressClickUntil = performance.now() + 700;
-        const r = cup.getBoundingClientRect();
-        try{
-          localStorage.setItem('puraniDiaryChaiPosition', JSON.stringify({
-            left:r.left / window.innerWidth,
-            top:r.top / window.innerHeight
-          }));
-        }catch(err){}
+        suppress=true;
+        const r=cup.getBoundingClientRect();
+        try{localStorage.setItem('puraniDiaryChaiPosition',JSON.stringify({left:r.left/innerWidth,top:r.top/innerHeight}));}catch(err){}
+        setTimeout(()=>suppress=false,500);
       }
       e.preventDefault();
+      e.stopPropagation();
     }
+    cup.addEventListener('mousedown',begin,{passive:false});
+    document.addEventListener('mousemove',move,{passive:false});
+    document.addEventListener('mouseup',finish,{passive:false});
+    cup.addEventListener('touchstart',begin,{passive:false});
+    document.addEventListener('touchmove',move,{passive:false});
+    document.addEventListener('touchend',finish,{passive:false});
+    document.addEventListener('touchcancel',finish,{passive:false});
+    cup.addEventListener('click',e=>{ if(suppress){e.preventDefault();e.stopImmediatePropagation();suppress=false;} },true);
 
-    cup.addEventListener('pointerdown', begin, {passive:false});
-    document.addEventListener('pointermove', move, {passive:false});
-    document.addEventListener('pointerup', finish, {passive:false});
-    document.addEventListener('pointercancel', finish, {passive:false});
-
-    // A drag normally produces a synthetic click. Swallow only that click.
-    document.addEventListener('click', function(e){
-      if(performance.now() < suppressClickUntil && cup.contains(e.target)){
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        suppressClickUntil = 0;
-      }
-    }, true);
-
-    // Restore saved position.
     try{
-      const saved = JSON.parse(localStorage.getItem('puraniDiaryChaiPosition') || 'null');
-      if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)){
-        requestAnimationFrame(()=>{
-          const x=Math.max(0,Math.min(window.innerWidth-cup.offsetWidth,saved.left*window.innerWidth));
-          const y=Math.max(0,Math.min(window.innerHeight-cup.offsetHeight,saved.top*window.innerHeight));
-          cup.style.left=x+'px'; cup.style.top=y+'px';
-          cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
-        });
-      }
+      const saved=JSON.parse(localStorage.getItem('puraniDiaryChaiPosition')||'null');
+      if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) requestAnimationFrame(()=>{
+        const x=Math.max(0,Math.min(innerWidth-cup.offsetWidth,saved.left*innerWidth));
+        const y=Math.max(0,Math.min(innerHeight-cup.offsetHeight,saved.top*innerHeight));
+        cup.style.left=x+'px'; cup.style.top=y+'px'; cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
+      });
     }catch(err){}
   })();
-
 </script>
 
 </body>
