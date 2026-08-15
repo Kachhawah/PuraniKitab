@@ -801,14 +801,14 @@
   }
 
 
-  /* ===== Interactive Chai Glass ===== */
+  /* ===== Real Chai PNG ===== */
   .chai-corner{
     position:fixed;
-    left:24px;
-    bottom:24px;
-    z-index:32;
-    width:74px;
-    height:96px;
+    left:18px;
+    bottom:18px;
+    z-index:31;
+    width:62px;
+    height:78px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -818,78 +818,98 @@
   }
   .chai-glass{
     position:relative;
-    width:40px;
-    height:58px;
-    border:2px solid rgba(255,235,205,.72);
-    border-top:1px solid rgba(255,235,205,.48);
-    border-radius:6px 6px 11px 11px;
-    background:linear-gradient(to bottom,rgba(255,255,255,.13),rgba(255,255,255,.04));
-    box-shadow:inset 0 0 9px rgba(255,255,255,.12),0 10px 25px rgba(0,0,0,.32);
-    transform-origin:bottom center;
-    transition:transform .12s ease;
-    backdrop-filter:blur(2px);
-  }
-  .chai-glass::before{
-    content:"";
-    position:absolute;
-    left:5px; right:5px; bottom:4px;
-    height:36px;
-    border-radius:3px 3px 8px 8px;
-    background:linear-gradient(to bottom,#c98645 0%,#a95f2d 100%);
-    box-shadow:inset 0 2px 5px rgba(255,210,150,.22);
-  }
-  .chai-glass::after{
-    content:"";
-    position:absolute;
-    left:-8px; right:-8px; top:0;
-    height:6px;
-    border-radius:50%;
-    border:1px solid rgba(255,235,205,.65);
-    background:rgba(166,93,43,.7);
-  }
-  .chai-steam{
-    position:absolute;
-    top:-25px;
-    width:3px;
-    height:24px;
-    border-radius:50%;
-    border-left:2px solid rgba(255,239,220,.42);
-    filter:blur(.4px);
-    animation:chaiSteam 2.4s ease-in-out infinite;
-  }
-  .chai-steam.s1{left:13px}
-  .chai-steam.s2{left:25px;animation-delay:.8s}
-  @keyframes chaiSteam{
-    0%,100%{opacity:0;transform:translateY(7px) rotate(8deg)}
-    35%{opacity:.65}
-    70%{opacity:.18;transform:translateY(-7px) rotate(-8deg)}
+    width:54px;
+    height:68px;
+    object-fit:contain;
+    transform-origin:50% 92%;
+    filter:drop-shadow(0 8px 10px rgba(0,0,0,.28));
   }
   .chai-cup-sip{
     animation:chaiSip .62s cubic-bezier(.2,.8,.3,1);
   }
   @keyframes chaiSip{
-    0%{transform:rotate(0) translateY(0)}
-    28%{transform:rotate(-10deg) translateY(-4px)}
-    55%{transform:rotate(7deg) translateY(-2px)}
-    100%{transform:rotate(0) translateY(0)}
+    0%{transform:rotate(0deg) translate(0,0)}
+    18%{transform:rotate(-7deg) translate(-2px,-2px)}
+    34%{transform:rotate(8deg) translate(3px,-1px)}
+    50%{transform:rotate(-6deg) translate(-3px,1px)}
+    66%{transform:rotate(4deg) translate(2px,0)}
+    82%{transform:rotate(-2deg)}
+    100%{transform:rotate(0deg) translate(0,0)}
   }
-  .chai-label{
-    position:absolute;
-    bottom:-2px;
-    white-space:nowrap;
-    font-family:'Baloo 2',sans-serif;
-    font-size:9px;
-    color:rgba(245,233,216,.7);
-    opacity:0;
-    transform:translateY(4px);
-    transition:.2s ease;
-    pointer-events:none;
-  }
-  .chai-corner:hover .chai-label,
-  .chai-corner:focus-visible .chai-label{opacity:1;transform:translateY(0)}
+  .chai-label{display:none !important}
+
   @media(max-width:600px){
     .chai-corner{left:8px;bottom:12px;width:64px;height:82px}
     .chai-glass{transform:scale(.88)}
+  }
+
+
+  /* ===== Minimal UI cleanup ===== */
+  .memory-tools{
+    position:fixed;top:22px;left:22px;z-index:32;
+    display:flex;gap:7px;
+  }
+  .memory-icon{
+    width:38px;height:38px;
+    border:1px solid rgba(255,235,205,.22);
+    border-radius:50%;
+    background:rgba(20,10,5,.42);
+    color:var(--cream);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    cursor:pointer;
+    font-size:14px;
+  }
+  .extra-tools{position:fixed;top:22px;right:22px;z-index:32}
+  .extra-btn{
+    width:38px;height:38px;
+    border:1px solid rgba(255,235,205,.22);
+    border-radius:50%;
+    background:rgba(20,10,5,.42);
+    color:var(--cream);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    cursor:pointer;font-size:14px;
+  }
+
+  /* Hide the redundant helper text that was competing with the hero image. */
+  .diary-hint{display:none !important}
+  .chai-label{display:none !important}
+
+  /* Chai should feel like a small environmental detail, not a UI control. */
+  .chai-corner{
+    position:fixed;left:18px;bottom:18px;z-index:31;
+    width:54px;height:70px;
+    opacity:.88;
+  }
+  .chai-glass{transform:scale(.72);transform-origin:bottom center}
+  .chai-corner:hover .chai-glass{filter:brightness(1.08)}
+
+  /* Keep the player compact and centered. */
+  .player, .music-player, .player-card{
+    max-width:min(560px,calc(100vw - 32px)) !important;
+  }
+
+  /* Diary control stays a single quiet pill. */
+  .diary-toggle{
+    top:22px !important;right:72px !important;
+    padding:9px 13px !important;
+    font-size:12px !important;
+    background:rgba(20,10,5,.42) !important;
+    border-color:rgba(255,235,205,.22) !important;
+  }
+
+  /* Never show the diary close button in the center of the hero.
+     It belongs to the diary sheet itself. */
+  .diary-close{top:14px;right:16px}
+
+  /* On mobile, reduce all floating controls further. */
+  @media(max-width:600px){
+    .memory-tools{top:10px;left:10px;gap:5px}
+    .memory-icon,.extra-btn{width:32px;height:32px;font-size:12px}
+    .extra-tools{top:10px;right:10px}
+    .diary-toggle{top:10px !important;right:50px !important;padding:7px 10px !important}
+    .chai-corner{left:6px;bottom:9px;width:46px;height:58px}
   }
 
 </style>
@@ -898,17 +918,11 @@
 
   <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
        aria-label="चाय की चुस्की">
-    <div class="chai-glass" id="chaiGlass">
-      <span class="chai-steam s1"></span>
-      <span class="chai-steam s2"></span>
-    </div>
-    <div class="chai-label">चाय की चुस्की ☕</div>
+    <img class="chai-glass" id="chaiGlass" src="chai.png" alt="चाय का गिलास">
   </div>
 
 
-  <div class="extra-tools">
-    <button class="extra-btn" id="extraMenuBtn" title="और यादें">✦</button>
-  </div>
+  
 
   <div class="extra-drawer" id="extraDrawer">
     <div class="extra-panel">
@@ -969,7 +983,6 @@
 
   <div class="memory-tools">
     <button class="memory-icon" id="archiveBtn" title="मेरी यादें">☷</button>
-    <button class="memory-icon" id="randomMemoryBtn" title="एक पुरानी याद">❤</button>
   </div>
 
   <div class="memory-drawer" id="memoryDrawer">
@@ -982,6 +995,7 @@
 
       <div class="memory-section">
         <div class="memory-row">
+          <button class="memory-small-btn" id="extraMenuInline">✦ और features</button>
           <button class="memory-small-btn" id="setPinBtn">🔒 PIN सेट करें</button>
           <button class="memory-small-btn" id="nightBtn">🌙 रात का मूड</button>
           <button class="memory-small-btn" id="exportBtn">↓ Export</button>
@@ -1103,6 +1117,7 @@
   /* ===== Extended Memory Capsule logic ===== */
   const extraDrawer = document.getElementById('extraDrawer');
   const extraMenuBtn = document.getElementById('extraMenuBtn');
+  const extraMenuInline = document.getElementById('extraMenuInline');
   const extraClose = document.getElementById('extraClose');
   const onThisDayCard = document.getElementById('onThisDayCard');
   const calendarCard = document.getElementById('calendarCard');
@@ -1169,7 +1184,8 @@
     updateMetaUI();
     extraDrawer.classList.add('open');
   }
-  extraMenuBtn.addEventListener('click',openExtra);
+  if(extraMenuBtn) extraMenuBtn.addEventListener('click',openExtra);
+  if(extraMenuInline) extraMenuInline.addEventListener('click',openExtra);
   extraClose.addEventListener('click',()=>extraDrawer.classList.remove('open'));
   extraDrawer.addEventListener('click',e=>{if(e.target===extraDrawer)extraDrawer.classList.remove('open')});
   saveMetaBtn.addEventListener('click',saveMeta);
@@ -1831,7 +1847,7 @@
     // Browser-native speech, so no external audio file is required.
     if('speechSynthesis' in window){
       window.speechSynthesis.cancel();
-      const voice = new SpeechSynthesisUtterance('चाय की एक चुस्की...');
+      const voice = new SpeechSynthesisUtterance('श्श्श... चुस्की...');
       voice.lang = 'hi-IN';
       voice.rate = 0.88;
       voice.pitch = 0.92;
