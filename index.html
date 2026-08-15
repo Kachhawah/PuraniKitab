@@ -817,12 +817,15 @@
     -webkit-tap-highlight-color:transparent;
   }
   .chai-glass{
+    display:block;
     position:relative;
     width:54px;
     height:68px;
     object-fit:contain;
+    transform:translateZ(0);
     transform-origin:50% 92%;
     filter:drop-shadow(0 8px 10px rgba(0,0,0,.28));
+    pointer-events:none;
   }
   .chai-cup-sip{
     animation:chaiSip .62s cubic-bezier(.2,.8,.3,1);
@@ -1845,14 +1848,16 @@
     chaiGlass.classList.add('chai-cup-sip');
 
     // Browser-native speech, so no external audio file is required.
-    if('speechSynthesis' in window){
-      window.speechSynthesis.cancel();
-      const voice = new SpeechSynthesisUtterance('श्श्श... चुस्की...');
-      voice.lang = 'hi-IN';
-      voice.rate = 0.88;
-      voice.pitch = 0.92;
-      voice.volume = 0.8;
-      window.speechSynthesis.speak(voice);
+    if(window.speechSynthesis && window.SpeechSynthesisUtterance){
+      try{
+        window.speechSynthesis.cancel();
+        const voice = new SpeechSynthesisUtterance('श्श्श... चुस्की...');
+        voice.lang = 'hi-IN';
+        voice.rate = 0.88;
+        voice.pitch = 0.92;
+        voice.volume = 0.8;
+        window.speechSynthesis.speak(voice);
+      }catch(e){}
     }
   }
 
