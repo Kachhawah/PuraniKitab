@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>पुरानी डायरी</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Baloo+2:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f5e9d8;
+    --gold:#c9a15a;
+    --box-bg:rgba(20,10,5,0.55);
+    --box-border:rgba(255,220,180,0.25);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    font-family:'Tiro Devanagari Hindi', serif;
+    overflow:hidden;
+  }
+
+  body{
+    position:relative;
+    min-height:100vh;
+    background-image:
+      linear-gradient(to bottom,
+        rgba(10,6,3,0.08) 0%,
+        rgba(10,6,3,0.0) 35%,
+        rgba(10,6,3,0.05) 65%,
+        rgba(10,6,3,0.28) 100%),
+      url('background.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+  /* ---------- Bottom cluster: shayari (small) + card ---------- */
+  .bottom-cluster{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:8vh;
+  }
+
+  .shayari-wrap{
+    width:100%;
+    padding:0 6vw;
+    text-align:center;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeSlideUp 0.9s ease forwards;
+    animation-delay:0.15s;
+  }
+
+  .shayari{
+    color:var(--cream);
+    font-size:clamp(13px, 1.6vw, 17px);
+    line-height:1.7;
+    text-shadow:0 2px 8px rgba(0,0,0,0.7);
+    max-width:480px;
+    margin:0 auto 16px;
+    letter-spacing:0.2px;
+    transition:opacity 0.5s ease;
+    min-height:2.6em;
+  }
+
+  .divider{
+    color:var(--gold);
+    font-size:11px;
+    display:inline-block;
+    margin:0 6px;
+    opacity:0.85;
+  }
+
+  /* ---------- Center-bottom rounded card ---------- */
+  .card-wrap{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    opacity:0;
+    transform:translateY(14px);
+    animation:fadeSlideUp 1s ease forwards;
+    animation-delay:0.5s;
+  }
+
+  .player-pill{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--box-bg);
+    border:1px solid var(--box-border);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-radius:999px;
+    padding:9px 20px 9px 9px;
+    width:min(430px, 90vw);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+    transition:box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .player-pill:hover{
+    box-shadow:0 12px 38px rgba(0,0,0,0.5);
+    border-color:rgba(255,220,180,0.4);
+  }
+
+  .pp-thumb{
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    object-fit:cover;
+    flex-shrink:0;
+    background:rgba(255,255,255,0.08);
+  }
+
+  .pp-info{
+    flex:1;
+    min-width:0;
+  }
+
+  .pp-title{
+    font-family:'Baloo 2', sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--cream);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-bottom:1px;
+  }
+
+  .pp-artist{
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    color:rgba(245,233,216,0.55);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    margin-bottom:7px;
+  }
+
+  .pp-progress{
+    height:3px;
+    width:100%;
+    background:rgba(255,255,255,0.2);
+    border-radius:3px;
+    overflow:hidden;
+  }
+
+  .pp-progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--gold);
+    border-radius:3px;
+    transition:width 0.4s linear;
+  }
+
+  .pp-controls{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-shrink:0;
+  }
+
+  .pp-btn{
+    background:none;
+    border:none;
+    color:rgba(245,233,216,0.75);
+    cursor:pointer;
+    padding:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:color 0.2s ease, transform 0.2s ease;
+  }
+
+  .pp-btn:hover{ color:var(--cream); transform:scale(1.08); }
+  .pp-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; border-radius:50%; }
+
+  .pp-btn svg{ width:16px; height:16px; }
+
+  .pp-play{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:var(--cream);
+    color:#1a1006;
+    padding:0;
+  }
+
+  .pp-play:hover{ background:#fff; transform:scale(1.06); }
+  .pp-play svg{ width:15px; height:15px; margin-left:2px; }
+  .pp-play.is-playing svg{ margin-left:0; }
+
+  #ytHidden{
+    position:absolute;
+    width:1px;
+    height:1px;
+    opacity:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+
+  @keyframes fadeSlideDown{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeSlideUp{
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .shayari-wrap, .card-wrap{ animation:none; opacity:1; transform:none; }
+    .pp-progress-fill{ transition:none; }
+  }
+
+  @media (max-width:600px){
+    body{ overflow:auto; min-height:100svh; }
+    .shayari-wrap{ padding-top:7vh; }
+    .card-wrap{ padding-bottom:7vh; }
+    .player-pill{ padding:8px 16px 8px 8px; }
+    .pp-thumb{ width:44px; height:44px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bottom-cluster">
+    <div class="shayari-wrap">
+      <p class="shayari" id="shayariText"></p>
+    </div>
+
+    <div class="card-wrap">
+      <div class="player-pill">
+        <img class="pp-thumb" id="ppThumb" src="https://img.youtube.com/vi/rTuxUAuJRyY/hqdefault.jpg" alt="">
+
+        <div class="pp-info">
+          <div class="pp-title" id="ppTitle">पुरानी यादें</div>
+          <div class="pp-artist" id="ppArtist">प्लेलिस्ट लोड हो रही है…</div>
+          <div class="pp-progress"><div class="pp-progress-fill" id="ppFill"></div></div>
+        </div>
+
+        <div class="pp-controls">
+          <button type="button" class="pp-btn" id="ppPrev" aria-label="पिछला गाना">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button type="button" class="pp-btn pp-play" id="ppPlay" aria-label="चलाएँ / रोकें">
+            <svg id="ppPlayIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button type="button" class="pp-btn" id="ppNext" aria-label="अगला गाना">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6v12l8.5-6z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="ytHidden"></div>
+    </div>
+  </div>
+
+<script>
+  const shayariList = [
+    // -- yaadein / nostalgia --
+    "कुछ पन्ने पुराने होते हैं, यादें नहीं।",
+    "चाय की भाप में, आज भी वो शाम ज़िंदा है।",
+    "गलियाँ बदल गईं, पर बेंच वही पुरानी है।",
+    "हर दुकान की एक कहानी होती है, हर कहानी की एक चाय।",
+    "वक़्त गुज़रा, बस बोर्ड का रंग नहीं गया।",
+
+    // -- pyaar / love --
+    "तेरे नाम की चाय बनती है, बस स्वाद तेरा नहीं आता।",
+    "मोहब्बत भी उस पुरानी दुकान जैसी है, हर मोड़ पर याद आती है।",
+    "इश्क़ था, इक़रार था, बस वक़्त का इंतज़ार था।",
+    "तेरी एक मुस्कान, पूरा शहर रोशन कर देती थी।",
+    "दिल की बातें, चाय की चुस्कियाँ — दोनों तेरे साथ अच्छी लगती थीं।",
+
+    // -- dard / sad --
+    "अब चाय अकेले पी जाती है, बातें अधूरी रह जाती हैं।",
+    "कुछ लोग चले जाते हैं, बस खुशबू छोड़ जाते हैं।",
+    "बेंच वही है, बस साथ बैठने वाला कोई नहीं।",
+    "हर शाम उसका इंतज़ार है, पर वो अब नहीं आता।",
+    "दर्द भी अजीब चीज़ है, चाय की तरह घूँट-घूँट पीना पड़ता है।"
+  ];
+
+  let shayariPool = [...shayariList].sort(() => Math.random() - 0.5);
+  let poolIndex = 0;
+  const el = document.getElementById('shayariText');
+
+  function renderShayari(text){
+    const parts = text.split(/,(.+)/);
+    if(parts.length > 1){
+      el.innerHTML = parts[0].trim() + ",<span class='divider'>❤</span>" + parts[1].trim();
+    } else {
+      el.textContent = text;
+    }
+  }
+
+  function showNextShayari(){
+    if(poolIndex >= shayariPool.length){
+      shayariPool = [...shayariList].sort(() => Math.random() - 0.5);
+      poolIndex = 0;
+    }
+    el.style.opacity = 0;
+    setTimeout(() => {
+      renderShayari(shayariPool[poolIndex]);
+      poolIndex++;
+      el.style.opacity = 1;
+    }, 500);
+  }
+
+  showNextShayari();
+  setInterval(showNextShayari, 7000);
+
+  const PLAYLIST_ID = "PLu1VwkFUm56jdkb3_AK9KHBOudjDQ3-J9";
+  const FIRST_VIDEO_ID = "rTuxUAuJRyY";
+
+  const ppThumb = document.getElementById('ppThumb');
+  const ppTitle = document.getElementById('ppTitle');
+  const ppArtist = document.getElementById('ppArtist');
+  const ppFill = document.getElementById('ppFill');
+  const ppPlay = document.getElementById('ppPlay');
+  const ppPlayIcon = document.getElementById('ppPlayIcon');
+  const ppPrev = document.getElementById('ppPrev');
+  const ppNext = document.getElementById('ppNext');
+
+  const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+  const ICON_PAUSE = '<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>';
+
+  let ytPlayer = null;
+  let progressTimer = null;
+
+  // Load YouTube IFrame API
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('ytHidden', {
+      height: '1',
+      width: '1',
+      videoId: FIRST_VIDEO_ID,
+      playerVars:{
+        listType:'playlist',
+        list: PLAYLIST_ID,
+        autoplay:0,
+        controls:0
+      },
+      events:{
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
+  };
+
+  function onPlayerReady(){
+    updateTrackInfo();
+  }
+
+  function updateTrackInfo(){
+    const data = ytPlayer.getVideoData();
+    if(data && data.title){
+      ppTitle.textContent = data.title;
+      ppArtist.textContent = data.author || 'YouTube';
+      ppThumb.src = `https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg`;
+    }
+  }
+
+  function onPlayerStateChange(e){
+    if(e.data === YT.PlayerState.PLAYING){
+      ppPlayIcon.innerHTML = ICON_PAUSE;
+      ppPlay.classList.add('is-playing');
+      updateTrackInfo();
+      startProgressTimer();
+    } else {
+      ppPlayIcon.innerHTML = ICON_PLAY;
+      ppPlay.classList.remove('is-playing');
+      if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED){
+        stopProgressTimer();
+      }
+    }
+  }
+
+  function startProgressTimer(){
+    stopProgressTimer();
+    progressTimer = setInterval(() => {
+      if(!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+      const dur = ytPlayer.getDuration();
+      const cur = ytPlayer.getCurrentTime();
+      if(dur > 0){
+        ppFill.style.width = ((cur / dur) * 100) + '%';
+      }
+    }, 500);
+  }
+
+  function stopProgressTimer(){
+    if(progressTimer){ clearInterval(progressTimer); progressTimer = null; }
+  }
+
+  ppPlay.addEventListener('click', () => {
+    if(!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+    const state = ytPlayer.getPlayerState();
+    if(state === YT.PlayerState.PLAYING){
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  });
+
+  ppNext.addEventListener('click', () => { if(ytPlayer) ytPlayer.nextVideo(); });
+  ppPrev.addEventListener('click', () => { if(ytPlayer) ytPlayer.previousVideo(); });
+</script>
+
+</body>
+</html>
