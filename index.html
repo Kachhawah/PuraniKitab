@@ -1295,10 +1295,39 @@
     }
   }
 
+
+  /* ===== Chai: same size, moved onto the red board ===== */
+  .chai-corner{
+    left:31.2vw !important;
+    top:10.5vh !important;
+    bottom:auto !important;
+    width:160px !important;
+    height:185px !important;
+  }
+
+  @media(max-width:900px){
+    .chai-corner{
+      left:27vw !important;
+      top:11vh !important;
+      width:125px !important;
+      height:150px !important;
+    }
+  }
+
+  @media(max-width:600px){
+    .chai-corner{
+      left:15vw !important;
+      top:16vh !important;
+      width:92px !important;
+      height:112px !important;
+    }
+  }
+
 </style>
 </head>
 <body>
 
+  <audio id="chaiSipAudio" preload="auto" src="chai-sip.m4a"></audio>
   <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
        aria-label="चाय की चुस्की">
     <img class="chai-glass" id="chaiGlass" src="chai.png" alt="चाय का गिलास">
@@ -1987,20 +2016,21 @@
   const chaiGlass = document.getElementById('chaiGlass');
 
   function chaiSip(){
+    // Restart the shake animation on every click, even if the previous one
+    // has not finished yet.
     chaiGlass.classList.remove('chai-cup-sip');
     void chaiGlass.offsetWidth;
     chaiGlass.classList.add('chai-cup-sip');
 
-    // Browser-native speech, so no external audio file is required.
-    if(window.speechSynthesis && window.SpeechSynthesisUtterance){
+    // Play the user's uploaded sip audio from the beginning on every click.
+    const audio = document.getElementById('chaiSipAudio');
+    if(audio){
       try{
-        window.speechSynthesis.cancel();
-        const voice = new SpeechSynthesisUtterance('श्श्श... चुस्की...');
-        voice.lang = 'hi-IN';
-        voice.rate = 0.88;
-        voice.pitch = 0.92;
-        voice.volume = 0.8;
-        window.speechSynthesis.speak(voice);
+        audio.currentTime = 0;
+        const playPromise = audio.play();
+        if(playPromise && typeof playPromise.catch === 'function'){
+          playPromise.catch(()=>{});
+        }
       }catch(e){}
     }
   }
