@@ -188,36 +188,30 @@
   .pp-btn svg{ width:16px; height:16px; }
 
   .pp-skip{
-    position:relative;
-    width:34px;
-    height:34px;
-    padding:0;
-    border-radius:50%;
+    width:48px;
+    height:32px;
+    padding:0 3px;
+    border-radius:16px;
     font-family:'Baloo 2', sans-serif;
-    font-size:8px;
+    font-size:10px;
     font-weight:600;
     line-height:1;
+    white-space:nowrap;
+    flex-shrink:0;
   }
 
-  .pp-skip .skip-icon{
-    font-family:Arial, sans-serif;
-    font-size:19px;
-    line-height:1;
-  }
-
-  .pp-skip .skip-text{
-    position:absolute;
-    font-size:7px;
-    font-weight:700;
-    top:10px;
-    left:0;
-    right:0;
-    text-align:center;
+  .pp-skip .skip-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    height:100%;
+    gap:1px;
     pointer-events:none;
   }
 
   .pp-skip:hover{
-    transform:scale(1.08);
+    transform:scale(1.05);
     color:var(--cream);
   }
 
@@ -420,7 +414,7 @@
 
         <div class="pp-controls">
           <button type="button" class="pp-btn pp-skip" id="ppBack10" aria-label="10 सेकंड पीछे" title="10 सेकंड पीछे">
-            <span class="skip-icon">↶</span><span class="skip-text">10</span>
+            <span class="skip-label">↶ 10s</span>
           </button>
           <button type="button" class="pp-btn" id="ppPrev" aria-label="पिछला गाना">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
@@ -432,7 +426,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6v12l8.5-6z"/></svg>
           </button>
           <button type="button" class="pp-btn pp-skip" id="ppForward20" aria-label="20 सेकंड आगे" title="20 सेकंड आगे">
-            <span class="skip-text">20</span><span class="skip-icon">↷</span>
+            <span class="skip-label">20s ↷</span>
           </button>
         </div>
       </div>
