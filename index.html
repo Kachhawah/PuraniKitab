@@ -915,6 +915,160 @@
     .chai-corner{left:6px;bottom:9px;width:46px;height:58px}
   }
 
+
+  /* ===== Mobile: desktop-like, clutter-free experience ===== */
+  @media (max-width:600px){
+    body{
+      min-height:100svh;
+      overflow:hidden;
+      background-position:center center !important;
+      background-size:cover !important;
+    }
+
+    /* Keep only the two essential corner controls visible. */
+    .memory-tools{
+      top:10px !important;
+      left:10px !important;
+      gap:5px !important;
+    }
+    .memory-tools .memory-icon{
+      width:32px !important;
+      height:32px !important;
+      font-size:12px !important;
+    }
+
+    .diary-toggle{
+      top:10px !important;
+      right:48px !important;
+      max-width:118px;
+      padding:7px 10px !important;
+      font-size:11px !important;
+      white-space:nowrap;
+    }
+
+    /* Advanced features remain available inside drawers, not on the hero. */
+    .extra-tools{display:none !important;}
+    .extra-drawer .extra-panel{
+      width:calc(100vw - 16px) !important;
+      max-height:calc(100svh - 16px) !important;
+      right:8px !important;
+      top:8px !important;
+      padding:16px !important;
+    }
+
+    /* Make the music player the single main foreground element. */
+    .player,
+    .music-player,
+    .player-card{
+      position:fixed !important;
+      left:50% !important;
+      right:auto !important;
+      bottom:18px !important;
+      transform:translateX(-50%) !important;
+      width:min(92vw,520px) !important;
+      max-width:92vw !important;
+      margin:0 !important;
+      z-index:25 !important;
+    }
+
+    /* If the project uses these common player wrappers, keep them compact. */
+    .player-inner,
+    .music-player-inner{
+      min-height:64px !important;
+    }
+
+    /* Hide nonessential helper copy around the hero. */
+    .diary-hint,
+    .chai-label{
+      display:none !important;
+    }
+
+    /* Chai becomes a tiny environmental object, not another UI card. */
+    .chai-corner{
+      left:8px !important;
+      bottom:16px !important;
+      width:42px !important;
+      height:54px !important;
+      opacity:.82;
+      z-index:24 !important;
+    }
+    .chai-glass{
+      width:42px !important;
+      height:54px !important;
+    }
+
+    /* Keep shayari centered and readable without competing with player. */
+    .shayari,
+    .quote,
+    .poetry,
+    .shayari-text{
+      max-width:88vw !important;
+      text-align:center !important;
+      line-height:1.55 !important;
+    }
+
+    /* Diary itself uses nearly the full screen only when opened. */
+    .diary-overlay{
+      padding:8px !important;
+    }
+    .diary{
+      width:96vw !important;
+      height:86svh !important;
+    }
+
+    /* Smaller diary controls, but still comfortably tappable. */
+    .diary-footer{
+      left:22px !important;
+      right:22px !important;
+      bottom:12px !important;
+    }
+    .diary-btn{
+      padding:6px 9px !important;
+      font-size:10px !important;
+    }
+  }
+
+
+  /* ===== Chai: environmental placement ===== */
+  .chai-corner{
+    position:fixed !important;
+    left:clamp(82px, 8.5vw, 145px) !important;
+    bottom:clamp(130px, 17vh, 190px) !important;
+    z-index:20 !important;
+    width:clamp(82px, 7vw, 112px) !important;
+    height:clamp(105px, 9vw, 138px) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    cursor:pointer !important;
+    user-select:none !important;
+    -webkit-tap-highlight-color:transparent !important;
+    opacity:.93 !important;
+    filter:drop-shadow(0 7px 9px rgba(0,0,0,.22)) !important;
+    transition:filter .2s ease, opacity .2s ease !important;
+  }
+  .chai-corner:hover{
+    opacity:1 !important;
+    filter:drop-shadow(0 9px 12px rgba(0,0,0,.28)) !important;
+  }
+  .chai-glass{
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    transform-origin:50% 92% !important;
+    pointer-events:none !important;
+    mix-blend-mode:normal !important;
+  }
+  @media(max-width:600px){
+    .chai-corner{
+      left:clamp(46px, 13vw, 82px) !important;
+      bottom:clamp(92px, 15vh, 132px) !important;
+      width:clamp(64px, 19vw, 88px) !important;
+      height:clamp(82px, 24vw, 108px) !important;
+      opacity:.9 !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -998,6 +1152,7 @@
 
       <div class="memory-section">
         <div class="memory-row">
+          <button class="memory-small-btn" id="randomMemoryInline">❤ पुरानी याद</button>
           <button class="memory-small-btn" id="extraMenuInline">✦ और features</button>
           <button class="memory-small-btn" id="setPinBtn">🔒 PIN सेट करें</button>
           <button class="memory-small-btn" id="nightBtn">🌙 रात का मूड</button>
@@ -1115,249 +1270,6 @@
 <script>
   let currentTrackTitle='';
 
-
-
-  /* ===== Extended Memory Capsule logic ===== */
-  const extraDrawer = document.getElementById('extraDrawer');
-  const extraMenuBtn = document.getElementById('extraMenuBtn');
-  const extraMenuInline = document.getElementById('extraMenuInline');
-  const extraClose = document.getElementById('extraClose');
-  const onThisDayCard = document.getElementById('onThisDayCard');
-  const calendarCard = document.getElementById('calendarCard');
-  const timelineCard = document.getElementById('timelineCard');
-  const favoriteCard = document.getElementById('favoriteCard');
-  const memoryTitleInput = document.getElementById('memoryTitleInput');
-  const memoryPlaceInput = document.getElementById('memoryPlaceInput');
-  const memoryPeopleInput = document.getElementById('memoryPeopleInput');
-  const memoryTagsInput = document.getElementById('memoryTagsInput');
-  const favoriteToggle = document.getElementById('favoriteToggle');
-  const saveMetaBtn = document.getElementById('saveMetaBtn');
-  const extraDetail = document.getElementById('extraDetail');
-  const calendarSection = document.getElementById('calendarSection');
-  const calendarGrid = document.getElementById('calendarGrid');
-  const voiceStatus = document.getElementById('voiceStatus');
-  const backupBtn = document.getElementById('backupBtn');
-  const restoreBtn = document.getElementById('restoreBtn');
-  const restoreInput = document.getElementById('restoreInput');
-  const clearBtn = document.getElementById('clearBtn');
-  const voiceStart = document.getElementById('voiceStart');
-  const voiceStop = document.getElementById('voiceStop');
-  const voicePlay = document.getElementById('voicePlay');
-  const voiceDelete = document.getElementById('voiceDelete');
-
-  let mediaRecorder = null;
-  let voiceChunks = [];
-  let voiceUrl = null;
-
-  function capsulePage(){
-    if(!diaryPages[diaryIndex]) diaryPages[diaryIndex] = diaryPageDefaults();
-    return diaryPages[diaryIndex];
-  }
-
-  function updateMetaUI(){
-    const page = capsulePage();
-    memoryTitleInput.value = page.title || '';
-    memoryPlaceInput.value = page.place || '';
-    memoryPeopleInput.value = page.people || '';
-    memoryTagsInput.value = page.tags || '';
-    favoriteToggle.textContent = page.favorite ? '★ Favorite' : '☆ Favorite';
-    extraDetail.innerHTML =
-      `<strong>${escapeMemoryHtml(page.title || 'बिना नाम की याद')}</strong><br>` +
-      `${escapeMemoryHtml(page.date || '')} ${escapeMemoryHtml(page.time || '')}<br>` +
-      `${escapeMemoryHtml(page.mood || '')}` +
-      `${page.place ? '<br>📍 '+escapeMemoryHtml(page.place) : ''}` +
-      `${page.people ? '<br>👥 '+escapeMemoryHtml(page.people) : ''}` +
-      `${page.tags ? '<br>🏷️ '+escapeMemoryHtml(page.tags) : ''}` +
-      `${page.song ? '<br>🎵 '+escapeMemoryHtml(page.song) : ''}`;
-    voiceStatus.textContent = page.voice ? '🎙️ Voice memory saved' : 'कोई voice note नहीं';
-  }
-
-  function saveMeta(){
-    const page = capsulePage();
-    page.title = memoryTitleInput.value.trim();
-    page.place = memoryPlaceInput.value.trim();
-    page.people = memoryPeopleInput.value.trim();
-    page.tags = memoryTagsInput.value.trim();
-    page.favorite = !!page.favorite;
-    diaryPersist();
-    updateMetaUI();
-  }
-
-  function openExtra(){
-    updateMetaUI();
-    extraDrawer.classList.add('open');
-  }
-  if(extraMenuBtn) extraMenuBtn.addEventListener('click',openExtra);
-  if(extraMenuInline) extraMenuInline.addEventListener('click',openExtra);
-  extraClose.addEventListener('click',()=>extraDrawer.classList.remove('open'));
-  extraDrawer.addEventListener('click',e=>{if(e.target===extraDrawer)extraDrawer.classList.remove('open')});
-  saveMetaBtn.addEventListener('click',saveMeta);
-  favoriteToggle.addEventListener('click',()=>{
-    const page=capsulePage();
-    page.favorite=!page.favorite;
-    diaryPersist();
-    updateMetaUI();
-  });
-
-  function showDetails(index){
-    diaryIndex=index;
-    diaryRender();
-    updateMetaUI();
-    extraDetail.scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
-
-  onThisDayCard.addEventListener('click',()=>{
-    const today = new Date();
-    const d = String(today.getDate());
-    const m = String(today.getMonth()+1);
-    const hits = diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>{
-      const date = new Date(p.date);
-      return p.date && !isNaN(date) && String(date.getDate())===d && String(date.getMonth()+1)===m;
-    });
-    if(hits.length){
-      showDetails(hits[hits.length-1]._i);
-      extraDetail.innerHTML = hits.map(p=>`<div style="margin-bottom:8px"><strong>${escapeMemoryHtml(p.date)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,160))}</div>`).join('');
-    }else{
-      extraDetail.textContent='इस तारीख की कोई पुरानी याद नहीं मिली।';
-    }
-  });
-
-  timelineCard.addEventListener('click',()=>{
-    const withSongs=diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>p.song);
-    extraDetail.innerHTML=withSongs.length
-      ? withSongs.map(p=>`<div class="memory-card-detail" data-index="${p._i}">🎵 <strong>${escapeMemoryHtml(p.song)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,120))}</div>`).join('')
-      : 'अभी किसी याद के साथ गाना save नहीं हुआ है।';
-  });
-
-  favoriteCard.addEventListener('click',()=>{
-    const fav=diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>p.favorite);
-    extraDetail.innerHTML=fav.length
-      ? fav.map(p=>`<div class="memory-card-detail" data-index="${p._i}">⭐ <strong>${escapeMemoryHtml(p.title||p.date)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,130))}</div>`).join('')
-      : 'अभी कोई favorite memory नहीं है।';
-  });
-
-  function renderCalendar(){
-    const now=new Date();
-    const y=now.getFullYear(),m=now.getMonth();
-    const first=new Date(y,m,1).getDay();
-    const days=new Date(y,m+1,0).getDate();
-    const heads=['र','सो','मं','बु','गु','शु','श'];
-    const dates=diaryPages.map(p=>new Date(p.date)).filter(d=>!isNaN(d.getTime()));
-    let out=heads.map(h=>`<div class="calendar-day head">${h}</div>`).join('');
-    for(let i=0;i<first;i++) out+='<div></div>';
-    for(let day=1;day<=days;day++){
-      const has=dates.some(d=>d.getFullYear()===y&&d.getMonth()===m&&d.getDate()===day);
-      out+=`<div class="calendar-day ${has?'has':''}" data-day="${day}">${day}</div>`;
-    }
-    calendarGrid.innerHTML=out;
-    calendarGrid.querySelectorAll('[data-day]').forEach(el=>el.addEventListener('click',()=>{
-      const day=Number(el.dataset.day);
-      const found=diaryPages.map((p,i)=>({...p,_i:i})).find(p=>{
-        const d=new Date(p.date);return !isNaN(d)&&d.getFullYear()===y&&d.getMonth()===m&&d.getDate()===day;
-      });
-      if(found) showDetails(found._i);
-    }));
-  }
-  calendarCard.addEventListener('click',()=>{
-    calendarSection.style.display=calendarSection.style.display==='none'?'block':'none';
-    renderCalendar();
-  });
-
-  function saveVoiceBlob(blob){
-    const reader=new FileReader();
-    reader.onload=()=>{capsulePage().voice=reader.result;diaryPersist();updateMetaUI()};
-    reader.readAsDataURL(blob);
-  }
-  voiceStart.addEventListener('click',async()=>{
-    if(!navigator.mediaDevices?.getUserMedia){
-      voiceStatus.textContent='इस browser में voice recording उपलब्ध नहीं है।';return;
-    }
-    try{
-      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      voiceChunks=[];
-      mediaRecorder=new MediaRecorder(stream);
-      mediaRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};
-      mediaRecorder.onstop=()=>{
-        stream.getTracks().forEach(t=>t.stop());
-        const blob=new Blob(voiceChunks,{type:'audio/webm'});
-        saveVoiceBlob(blob);
-        voiceStatus.textContent='🎙️ Voice memory saved';
-      };
-      mediaRecorder.start();
-      voiceStatus.textContent='🔴 Recording...';
-    }catch(e){voiceStatus.textContent='Microphone permission नहीं मिली।'}
-  });
-  voiceStop.addEventListener('click',()=>{
-    if(mediaRecorder&&mediaRecorder.state!=='inactive') mediaRecorder.stop();
-  });
-  voicePlay.addEventListener('click',()=>{
-    const v=capsulePage().voice;
-    if(!v){voiceStatus.textContent='पहले voice memory record करो।';return;}
-    if(voiceUrl)URL.revokeObjectURL(voiceUrl);
-    const audio=new Audio(v);audio.play();
-  });
-  voiceDelete.addEventListener('click',()=>{
-    capsulePage().voice='';
-    diaryPersist();
-    updateMetaUI();
-  });
-
-  function downloadBlob(name,data,type){
-    const blob=new Blob([data],{type});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');a.href=url;a.download=name;a.click();
-    setTimeout(()=>URL.revokeObjectURL(url),500);
-  }
-  backupBtn.addEventListener('click',()=>{
-    diarySaveCurrent();
-    downloadBlob('purani-diary-backup.json',JSON.stringify(diaryPages,null,2),'application/json');
-  });
-  restoreBtn.addEventListener('click',()=>restoreInput.click());
-  restoreInput.addEventListener('change',()=>{
-    const file=restoreInput.files?.[0];if(!file)return;
-    const r=new FileReader();
-    r.onload=()=>{
-      try{
-        const data=JSON.parse(r.result);
-        if(!Array.isArray(data))throw new Error();
-        diaryPages=data;
-        diaryIndex=0;
-        diaryPersist();
-        diaryRender();
-        updateMetaUI();
-        alert('Diary restore हो गई।');
-      }catch(e){alert('Backup file सही नहीं है।')}
-    };
-    r.readAsText(file);
-  });
-  clearBtn.addEventListener('click',()=>{
-    if(confirm('पूरी diary और memories delete करनी हैं? यह वापस नहीं आएगा।')){
-      localStorage.removeItem(DIARY_KEY);
-      diaryPages=[diaryPageDefaults()];
-      diaryIndex=0;
-      diaryPersist();
-      diaryRender();
-      updateMetaUI();
-    }
-  });
-
-  // Keep enhanced metadata after normal page navigation.
-  const oldDiaryTurn = diaryTurn;
-  diaryTurn = function(direction){
-    oldDiaryTurn(direction);
-    setTimeout(()=>updateMetaUI(),450);
-  };
-
-  // Add richer fields to newly created pages.
-  const oldAddPage = diaryAddPage;
-  diaryAddPage = function(){
-    oldAddPage();
-    diaryPages[diaryIndex] = {...diaryPageDefaults(),...diaryPages[diaryIndex]};
-    diaryPersist();
-    updateMetaUI();
-  };
-
-  updateMetaUI();
 
 
   /* ---------- Personal Memory Diary ---------- */
@@ -1724,10 +1636,11 @@
   };
 
   function autoShufflePlaylist(){
-    if(!ytPlayer || typeof ytPlayer.setShuffle !== 'function') return;
-    // Shuffle the entire connected YouTube playlist. No shuffle button is exposed.
-    ytPlayer.setShuffle(true);
-    if(typeof ytPlayer.setLoop === 'function') ytPlayer.setLoop(true);
+    if(!ytPlayer) return;
+    try{
+      if(typeof ytPlayer.setShuffle === 'function') ytPlayer.setShuffle(true);
+      if(typeof ytPlayer.setLoop === 'function') ytPlayer.setLoop(true);
+    }catch(e){}
   }
 
   function onPlayerReady(){
@@ -1755,8 +1668,13 @@
     } else {
       ppPlayIcon.innerHTML = ICON_PLAY;
       ppPlay.classList.remove('is-playing');
-      if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED){
+      if(e.data === YT.PlayerState.PAUSED){
         stopProgressTimer();
+      }
+      if(e.data === YT.PlayerState.ENDED){
+        stopProgressTimer();
+        autoShufflePlaylist();
+        if(ytPlayer) ytPlayer.nextVideo();
       }
     }
   }
@@ -1777,7 +1695,7 @@
     if(progressTimer){ clearInterval(progressTimer); progressTimer = null; }
   }
 
-  ppPlay.addEventListener('click', () => {
+  if(ppPlay) ppPlay.addEventListener('click', () => {
     if(!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
     const state = ytPlayer.getPlayerState();
     if(state === YT.PlayerState.PLAYING){
@@ -1787,21 +1705,21 @@
     }
   });
 
-  ppNext.addEventListener('click', () => {
+  if(ppNext) ppNext.addEventListener('click', () => {
     if(ytPlayer){
       autoShufflePlaylist();
       ytPlayer.nextVideo();
     }
   });
-  ppPrev.addEventListener('click', () => { if(ytPlayer) ytPlayer.previousVideo(); });
+  if(ppPrev) ppPrev.addEventListener('click', () => { if(ytPlayer) ytPlayer.previousVideo(); });
 
-  ppBack10.addEventListener('click', () => {
+  if(ppBack10) ppBack10.addEventListener('click', () => {
     if(!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
     const current = ytPlayer.getCurrentTime();
     ytPlayer.seekTo(Math.max(0, current - 10), true);
   });
 
-  ppForward20.addEventListener('click', () => {
+  if(ppForward20) ppForward20.addEventListener('click', () => {
     if(!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
     const current = ytPlayer.getCurrentTime();
     const duration = typeof ytPlayer.getDuration === 'function' ? ytPlayer.getDuration() : 0;
@@ -1811,7 +1729,7 @@
 
   /* ===== Extra memory features ===== */
   const memorySearch=document.getElementById('memorySearch'), memoryList=document.getElementById('memoryList'), memoryCount=document.getElementById('memoryCount'), memoryDrawer=document.getElementById('memoryDrawer');
-  const archiveBtn=document.getElementById('archiveBtn'), archiveClose=document.getElementById('archiveClose'), randomMemoryBtn=document.getElementById('randomMemoryBtn');
+  const archiveBtn=document.getElementById('archiveBtn'), archiveClose=document.getElementById('archiveClose'), randomMemoryInline=document.getElementById('randomMemoryInline');
   const diaryMood=document.getElementById('diaryMood'), diaryTime=document.getElementById('diaryTime'), memorySong=document.getElementById('memorySong');
   const photoBtn=document.getElementById('photoBtn'), photoInput=document.getElementById('photoInput'), diaryPhoto=document.getElementById('diaryPhoto'), diaryPhotoLabel=document.getElementById('diaryPhotoLabel');
   const handBtn=document.getElementById('handBtn'), exportPageBtn=document.getElementById('exportPageBtn'), nightBtn=document.getElementById('nightBtn'), exportBtn=document.getElementById('exportBtn');
@@ -1826,7 +1744,7 @@
   function renderMemoryList(q=''){const query=q.trim().toLowerCase();const rows=diaryPages.map((p,i)=>({p,i})).filter(x=>!query||`${x.p.text} ${x.p.date} ${x.p.mood} ${x.p.song}`.toLowerCase().includes(query)).reverse();memoryCount.textContent=`${rows.length} याद${rows.length===1?'':'ें'}`;memoryList.innerHTML=rows.length?rows.map(x=>`<div class="memory-item" data-page="${x.i}"><strong>${esc(x.p.mood||'☕')} · ${esc(x.p.date)}</strong><span>${esc((x.p.text||'खाली पन्ना').replace(/\s+/g,' ').slice(0,95))}${x.p.song?' · 🎵 '+esc(x.p.song):''}</span></div>`).join(''):'<div class="memory-empty">अभी कोई याद नहीं मिली। डायरी में कुछ लिखो।</div>'}
   archiveBtn.onclick=()=>{renderMemoryList(memorySearch.value);memoryDrawer.classList.add('open')}; archiveClose.onclick=()=>memoryDrawer.classList.remove('open'); memoryDrawer.onclick=e=>{if(e.target===memoryDrawer)memoryDrawer.classList.remove('open')}; memorySearch.oninput=()=>renderMemoryList(memorySearch.value);
   memoryList.onclick=e=>{const item=e.target.closest('.memory-item');if(!item)return;diaryIndex=Number(item.dataset.page);diaryRender();memoryDrawer.classList.remove('open');diaryOpen()};
-  randomMemoryBtn.onclick=()=>{if(!diaryPages.length)return;diaryIndex=Math.floor(Math.random()*diaryPages.length);diaryRender();diaryOpen()};
+  randomMemoryInline.onclick=()=>{if(!diaryPages.length)return;diaryIndex=Math.floor(Math.random()*diaryPages.length);diaryRender();diaryOpen()};
   diaryMood.onclick=()=>{moodIndex=(moodIndex+1)%MOODS.length;diaryMood.textContent=MOODS[moodIndex];saveEnhanced()};
   photoBtn.onclick=()=>photoInput.click(); photoInput.onchange=()=>{const f=photoInput.files&&photoInput.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{diaryPages[diaryIndex].photo=r.result;diaryPages[diaryIndex].photoName=f.name.replace(/\.[^.]+$/,'').slice(0,30);saveEnhanced();renderEnhanced()};r.readAsDataURL(f)}; diaryPhoto.onclick=()=>{const p=diaryPages[diaryIndex];if(p.photo)window.open(p.photo,'_blank')};
   handBtn.onclick=()=>{diaryPage.classList.toggle('handwritten');saveEnhanced()}; nightBtn.onclick=()=>{diaryPage.classList.toggle('night-paper');saveEnhanced()};
