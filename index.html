@@ -733,9 +733,239 @@
     .memory-song{max-width:220px}
   }
 
+
+  /* ===== Extended Memory Capsule ===== */
+  .extra-tools{
+    position:fixed;right:24px;top:24px;z-index:35;display:flex;gap:6px;
+  }
+  .extra-btn{
+    width:36px;height:36px;border:1px solid rgba(255,220,180,.28);
+    border-radius:50%;background:rgba(20,10,5,.55);color:var(--cream);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    cursor:pointer;font-size:15px;
+  }
+  .extra-drawer{
+    position:fixed;inset:0;z-index:60;display:none;
+    background:rgba(8,4,2,.38);backdrop-filter:blur(4px);
+  }
+  .extra-drawer.open{display:block}
+  .extra-panel{
+    position:absolute;right:18px;top:18px;width:min(420px,calc(100vw - 36px));
+    max-height:calc(100vh - 36px);overflow:auto;padding:20px;
+    border:1px solid rgba(255,220,180,.22);border-radius:18px;
+    background:rgba(24,12,6,.9);color:var(--cream);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  }
+  .extra-panel h3{font-family:'Baloo 2',sans-serif;margin-bottom:12px}
+  .extra-close{float:right;border:0;background:none;color:var(--cream);font-size:22px;cursor:pointer}
+  .extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .extra-card{
+    border:1px solid rgba(255,220,180,.14);border-radius:12px;
+    padding:11px;background:rgba(255,255,255,.045);cursor:pointer;
+  }
+  .extra-card:hover{background:rgba(255,255,255,.08)}
+  .extra-card strong{font-size:12px;display:block}
+  .extra-card span{font-size:10px;opacity:.6;display:block;margin-top:3px}
+  .extra-section{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,220,180,.12)}
+  .extra-label{font-size:11px;opacity:.65;margin-bottom:7px}
+  .extra-input,.extra-select{
+    width:100%;padding:9px 11px;border-radius:10px;border:1px solid rgba(255,220,180,.18);
+    background:rgba(255,255,255,.06);color:var(--cream);outline:0;font-family:'Baloo 2',sans-serif;
+  }
+  .extra-input::placeholder{color:rgba(245,233,216,.4)}
+  .extra-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+  .extra-action{
+    border:1px solid rgba(255,220,180,.2);border-radius:999px;
+    background:rgba(255,255,255,.06);color:var(--cream);padding:7px 10px;
+    font-family:'Baloo 2',sans-serif;font-size:11px;cursor:pointer;
+  }
+  .extra-status{font-size:10px;opacity:.6;margin-top:7px}
+  .memory-card-detail{
+    margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.045);
+    font-size:11px;line-height:1.7;
+  }
+  .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .calendar-day{
+    padding:6px 2px;border-radius:7px;text-align:center;font-size:10px;
+    background:rgba(255,255,255,.035);cursor:pointer;
+  }
+  .calendar-day.has{background:rgba(201,161,90,.18)}
+  .calendar-day.head{opacity:.45;cursor:default}
+  .voice-status{font-size:10px;opacity:.65;margin-top:6px}
+  .hidden-file{display:none}
+  @media(max-width:600px){
+    .extra-tools{right:10px;top:10px}
+    .extra-btn{width:32px;height:32px}
+    .extra-panel{right:8px;top:8px;width:calc(100vw - 16px);max-height:calc(100vh - 16px)}
+    .extra-grid{grid-template-columns:1fr 1fr}
+  }
+
+
+  /* ===== Interactive Chai Glass ===== */
+  .chai-corner{
+    position:fixed;
+    left:24px;
+    bottom:24px;
+    z-index:32;
+    width:74px;
+    height:96px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .chai-glass{
+    position:relative;
+    width:40px;
+    height:58px;
+    border:2px solid rgba(255,235,205,.72);
+    border-top:1px solid rgba(255,235,205,.48);
+    border-radius:6px 6px 11px 11px;
+    background:linear-gradient(to bottom,rgba(255,255,255,.13),rgba(255,255,255,.04));
+    box-shadow:inset 0 0 9px rgba(255,255,255,.12),0 10px 25px rgba(0,0,0,.32);
+    transform-origin:bottom center;
+    transition:transform .12s ease;
+    backdrop-filter:blur(2px);
+  }
+  .chai-glass::before{
+    content:"";
+    position:absolute;
+    left:5px; right:5px; bottom:4px;
+    height:36px;
+    border-radius:3px 3px 8px 8px;
+    background:linear-gradient(to bottom,#c98645 0%,#a95f2d 100%);
+    box-shadow:inset 0 2px 5px rgba(255,210,150,.22);
+  }
+  .chai-glass::after{
+    content:"";
+    position:absolute;
+    left:-8px; right:-8px; top:0;
+    height:6px;
+    border-radius:50%;
+    border:1px solid rgba(255,235,205,.65);
+    background:rgba(166,93,43,.7);
+  }
+  .chai-steam{
+    position:absolute;
+    top:-25px;
+    width:3px;
+    height:24px;
+    border-radius:50%;
+    border-left:2px solid rgba(255,239,220,.42);
+    filter:blur(.4px);
+    animation:chaiSteam 2.4s ease-in-out infinite;
+  }
+  .chai-steam.s1{left:13px}
+  .chai-steam.s2{left:25px;animation-delay:.8s}
+  @keyframes chaiSteam{
+    0%,100%{opacity:0;transform:translateY(7px) rotate(8deg)}
+    35%{opacity:.65}
+    70%{opacity:.18;transform:translateY(-7px) rotate(-8deg)}
+  }
+  .chai-cup-sip{
+    animation:chaiSip .62s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes chaiSip{
+    0%{transform:rotate(0) translateY(0)}
+    28%{transform:rotate(-10deg) translateY(-4px)}
+    55%{transform:rotate(7deg) translateY(-2px)}
+    100%{transform:rotate(0) translateY(0)}
+  }
+  .chai-label{
+    position:absolute;
+    bottom:-2px;
+    white-space:nowrap;
+    font-family:'Baloo 2',sans-serif;
+    font-size:9px;
+    color:rgba(245,233,216,.7);
+    opacity:0;
+    transform:translateY(4px);
+    transition:.2s ease;
+    pointer-events:none;
+  }
+  .chai-corner:hover .chai-label,
+  .chai-corner:focus-visible .chai-label{opacity:1;transform:translateY(0)}
+  @media(max-width:600px){
+    .chai-corner{left:8px;bottom:12px;width:64px;height:82px}
+    .chai-glass{transform:scale(.88)}
+  }
+
 </style>
 </head>
 <body>
+
+  <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
+       aria-label="चाय की चुस्की">
+    <div class="chai-glass" id="chaiGlass">
+      <span class="chai-steam s1"></span>
+      <span class="chai-steam s2"></span>
+    </div>
+    <div class="chai-label">चाय की चुस्की ☕</div>
+  </div>
+
+
+  <div class="extra-tools">
+    <button class="extra-btn" id="extraMenuBtn" title="और यादें">✦</button>
+  </div>
+
+  <div class="extra-drawer" id="extraDrawer">
+    <div class="extra-panel">
+      <button class="extra-close" id="extraClose">×</button>
+      <h3>✦ यादों का कोना</h3>
+
+      <div class="extra-grid">
+        <div class="extra-card" id="onThisDayCard"><strong>🕰️ On This Day</strong><span>आज की पुरानी यादें</span></div>
+        <div class="extra-card" id="calendarCard"><strong>📅 Calendar</strong><span>यादों का पूरा महीना</span></div>
+        <div class="extra-card" id="timelineCard"><strong>🎵 Timeline</strong><span>गानों के साथ यादें</span></div>
+        <div class="extra-card" id="favoriteCard"><strong>⭐ Favorites</strong><span>पसंदीदा यादें</span></div>
+      </div>
+
+      <div class="extra-section">
+        <div class="extra-label">मेरी याद के बारे में</div>
+        <input class="extra-input" id="memoryTitleInput" placeholder="याद का छोटा सा नाम">
+        <input class="extra-input" id="memoryPlaceInput" placeholder="📍 जगह" style="margin-top:7px">
+        <input class="extra-input" id="memoryPeopleInput" placeholder="👥 किसके साथ?" style="margin-top:7px">
+        <input class="extra-input" id="memoryTagsInput" placeholder="#love #travel #friends" style="margin-top:7px">
+        <div class="extra-actions">
+          <button class="extra-action" id="favoriteToggle">☆ Favorite</button>
+          <button class="extra-action" id="saveMetaBtn">Save details</button>
+        </div>
+      </div>
+
+      <div class="extra-section">
+        <div class="extra-label">🎙️ Voice memory</div>
+        <div class="extra-actions">
+          <button class="extra-action" id="voiceStart">● Record</button>
+          <button class="extra-action" id="voiceStop">■ Stop</button>
+          <button class="extra-action" id="voicePlay">▶ Play</button>
+          <button class="extra-action" id="voiceDelete">Delete</button>
+        </div>
+        <div class="voice-status" id="voiceStatus">कोई voice note नहीं</div>
+      </div>
+
+      <div class="extra-section" id="calendarSection" style="display:none">
+        <div class="extra-label">📅 Memory calendar</div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <div class="extra-section" id="extraDetailSection">
+        <div class="extra-label">Memory details</div>
+        <div class="memory-card-detail" id="extraDetail">कोई याद चुनें।</div>
+      </div>
+
+      <div class="extra-section">
+        <div class="extra-actions">
+          <button class="extra-action" id="backupBtn">💾 Backup JSON</button>
+          <button class="extra-action" id="restoreBtn">↥ Restore JSON</button>
+          <button class="extra-action" id="clearBtn">🗑️ Clear diary</button>
+          <input class="hidden-file" id="restoreInput" type="file" accept=".json,application/json">
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="memory-tools">
     <button class="memory-icon" id="archiveBtn" title="मेरी यादें">☷</button>
@@ -867,6 +1097,248 @@
 
 <script>
   let currentTrackTitle='';
+
+
+
+  /* ===== Extended Memory Capsule logic ===== */
+  const extraDrawer = document.getElementById('extraDrawer');
+  const extraMenuBtn = document.getElementById('extraMenuBtn');
+  const extraClose = document.getElementById('extraClose');
+  const onThisDayCard = document.getElementById('onThisDayCard');
+  const calendarCard = document.getElementById('calendarCard');
+  const timelineCard = document.getElementById('timelineCard');
+  const favoriteCard = document.getElementById('favoriteCard');
+  const memoryTitleInput = document.getElementById('memoryTitleInput');
+  const memoryPlaceInput = document.getElementById('memoryPlaceInput');
+  const memoryPeopleInput = document.getElementById('memoryPeopleInput');
+  const memoryTagsInput = document.getElementById('memoryTagsInput');
+  const favoriteToggle = document.getElementById('favoriteToggle');
+  const saveMetaBtn = document.getElementById('saveMetaBtn');
+  const extraDetail = document.getElementById('extraDetail');
+  const calendarSection = document.getElementById('calendarSection');
+  const calendarGrid = document.getElementById('calendarGrid');
+  const voiceStatus = document.getElementById('voiceStatus');
+  const backupBtn = document.getElementById('backupBtn');
+  const restoreBtn = document.getElementById('restoreBtn');
+  const restoreInput = document.getElementById('restoreInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const voiceStart = document.getElementById('voiceStart');
+  const voiceStop = document.getElementById('voiceStop');
+  const voicePlay = document.getElementById('voicePlay');
+  const voiceDelete = document.getElementById('voiceDelete');
+
+  let mediaRecorder = null;
+  let voiceChunks = [];
+  let voiceUrl = null;
+
+  function capsulePage(){
+    if(!diaryPages[diaryIndex]) diaryPages[diaryIndex] = diaryPageDefaults();
+    return diaryPages[diaryIndex];
+  }
+
+  function updateMetaUI(){
+    const page = capsulePage();
+    memoryTitleInput.value = page.title || '';
+    memoryPlaceInput.value = page.place || '';
+    memoryPeopleInput.value = page.people || '';
+    memoryTagsInput.value = page.tags || '';
+    favoriteToggle.textContent = page.favorite ? '★ Favorite' : '☆ Favorite';
+    extraDetail.innerHTML =
+      `<strong>${escapeMemoryHtml(page.title || 'बिना नाम की याद')}</strong><br>` +
+      `${escapeMemoryHtml(page.date || '')} ${escapeMemoryHtml(page.time || '')}<br>` +
+      `${escapeMemoryHtml(page.mood || '')}` +
+      `${page.place ? '<br>📍 '+escapeMemoryHtml(page.place) : ''}` +
+      `${page.people ? '<br>👥 '+escapeMemoryHtml(page.people) : ''}` +
+      `${page.tags ? '<br>🏷️ '+escapeMemoryHtml(page.tags) : ''}` +
+      `${page.song ? '<br>🎵 '+escapeMemoryHtml(page.song) : ''}`;
+    voiceStatus.textContent = page.voice ? '🎙️ Voice memory saved' : 'कोई voice note नहीं';
+  }
+
+  function saveMeta(){
+    const page = capsulePage();
+    page.title = memoryTitleInput.value.trim();
+    page.place = memoryPlaceInput.value.trim();
+    page.people = memoryPeopleInput.value.trim();
+    page.tags = memoryTagsInput.value.trim();
+    page.favorite = !!page.favorite;
+    diaryPersist();
+    updateMetaUI();
+  }
+
+  function openExtra(){
+    updateMetaUI();
+    extraDrawer.classList.add('open');
+  }
+  extraMenuBtn.addEventListener('click',openExtra);
+  extraClose.addEventListener('click',()=>extraDrawer.classList.remove('open'));
+  extraDrawer.addEventListener('click',e=>{if(e.target===extraDrawer)extraDrawer.classList.remove('open')});
+  saveMetaBtn.addEventListener('click',saveMeta);
+  favoriteToggle.addEventListener('click',()=>{
+    const page=capsulePage();
+    page.favorite=!page.favorite;
+    diaryPersist();
+    updateMetaUI();
+  });
+
+  function showDetails(index){
+    diaryIndex=index;
+    diaryRender();
+    updateMetaUI();
+    extraDetail.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  onThisDayCard.addEventListener('click',()=>{
+    const today = new Date();
+    const d = String(today.getDate());
+    const m = String(today.getMonth()+1);
+    const hits = diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>{
+      const date = new Date(p.date);
+      return p.date && !isNaN(date) && String(date.getDate())===d && String(date.getMonth()+1)===m;
+    });
+    if(hits.length){
+      showDetails(hits[hits.length-1]._i);
+      extraDetail.innerHTML = hits.map(p=>`<div style="margin-bottom:8px"><strong>${escapeMemoryHtml(p.date)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,160))}</div>`).join('');
+    }else{
+      extraDetail.textContent='इस तारीख की कोई पुरानी याद नहीं मिली।';
+    }
+  });
+
+  timelineCard.addEventListener('click',()=>{
+    const withSongs=diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>p.song);
+    extraDetail.innerHTML=withSongs.length
+      ? withSongs.map(p=>`<div class="memory-card-detail" data-index="${p._i}">🎵 <strong>${escapeMemoryHtml(p.song)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,120))}</div>`).join('')
+      : 'अभी किसी याद के साथ गाना save नहीं हुआ है।';
+  });
+
+  favoriteCard.addEventListener('click',()=>{
+    const fav=diaryPages.map((p,i)=>({...p,_i:i})).filter(p=>p.favorite);
+    extraDetail.innerHTML=fav.length
+      ? fav.map(p=>`<div class="memory-card-detail" data-index="${p._i}">⭐ <strong>${escapeMemoryHtml(p.title||p.date)}</strong><br>${escapeMemoryHtml((p.text||'').slice(0,130))}</div>`).join('')
+      : 'अभी कोई favorite memory नहीं है।';
+  });
+
+  function renderCalendar(){
+    const now=new Date();
+    const y=now.getFullYear(),m=now.getMonth();
+    const first=new Date(y,m,1).getDay();
+    const days=new Date(y,m+1,0).getDate();
+    const heads=['र','सो','मं','बु','गु','शु','श'];
+    const dates=diaryPages.map(p=>new Date(p.date)).filter(d=>!isNaN(d.getTime()));
+    let out=heads.map(h=>`<div class="calendar-day head">${h}</div>`).join('');
+    for(let i=0;i<first;i++) out+='<div></div>';
+    for(let day=1;day<=days;day++){
+      const has=dates.some(d=>d.getFullYear()===y&&d.getMonth()===m&&d.getDate()===day);
+      out+=`<div class="calendar-day ${has?'has':''}" data-day="${day}">${day}</div>`;
+    }
+    calendarGrid.innerHTML=out;
+    calendarGrid.querySelectorAll('[data-day]').forEach(el=>el.addEventListener('click',()=>{
+      const day=Number(el.dataset.day);
+      const found=diaryPages.map((p,i)=>({...p,_i:i})).find(p=>{
+        const d=new Date(p.date);return !isNaN(d)&&d.getFullYear()===y&&d.getMonth()===m&&d.getDate()===day;
+      });
+      if(found) showDetails(found._i);
+    }));
+  }
+  calendarCard.addEventListener('click',()=>{
+    calendarSection.style.display=calendarSection.style.display==='none'?'block':'none';
+    renderCalendar();
+  });
+
+  function saveVoiceBlob(blob){
+    const reader=new FileReader();
+    reader.onload=()=>{capsulePage().voice=reader.result;diaryPersist();updateMetaUI()};
+    reader.readAsDataURL(blob);
+  }
+  voiceStart.addEventListener('click',async()=>{
+    if(!navigator.mediaDevices?.getUserMedia){
+      voiceStatus.textContent='इस browser में voice recording उपलब्ध नहीं है।';return;
+    }
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      voiceChunks=[];
+      mediaRecorder=new MediaRecorder(stream);
+      mediaRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};
+      mediaRecorder.onstop=()=>{
+        stream.getTracks().forEach(t=>t.stop());
+        const blob=new Blob(voiceChunks,{type:'audio/webm'});
+        saveVoiceBlob(blob);
+        voiceStatus.textContent='🎙️ Voice memory saved';
+      };
+      mediaRecorder.start();
+      voiceStatus.textContent='🔴 Recording...';
+    }catch(e){voiceStatus.textContent='Microphone permission नहीं मिली।'}
+  });
+  voiceStop.addEventListener('click',()=>{
+    if(mediaRecorder&&mediaRecorder.state!=='inactive') mediaRecorder.stop();
+  });
+  voicePlay.addEventListener('click',()=>{
+    const v=capsulePage().voice;
+    if(!v){voiceStatus.textContent='पहले voice memory record करो।';return;}
+    if(voiceUrl)URL.revokeObjectURL(voiceUrl);
+    const audio=new Audio(v);audio.play();
+  });
+  voiceDelete.addEventListener('click',()=>{
+    capsulePage().voice='';
+    diaryPersist();
+    updateMetaUI();
+  });
+
+  function downloadBlob(name,data,type){
+    const blob=new Blob([data],{type});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=name;a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),500);
+  }
+  backupBtn.addEventListener('click',()=>{
+    diarySaveCurrent();
+    downloadBlob('purani-diary-backup.json',JSON.stringify(diaryPages,null,2),'application/json');
+  });
+  restoreBtn.addEventListener('click',()=>restoreInput.click());
+  restoreInput.addEventListener('change',()=>{
+    const file=restoreInput.files?.[0];if(!file)return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const data=JSON.parse(r.result);
+        if(!Array.isArray(data))throw new Error();
+        diaryPages=data;
+        diaryIndex=0;
+        diaryPersist();
+        diaryRender();
+        updateMetaUI();
+        alert('Diary restore हो गई।');
+      }catch(e){alert('Backup file सही नहीं है।')}
+    };
+    r.readAsText(file);
+  });
+  clearBtn.addEventListener('click',()=>{
+    if(confirm('पूरी diary और memories delete करनी हैं? यह वापस नहीं आएगा।')){
+      localStorage.removeItem(DIARY_KEY);
+      diaryPages=[diaryPageDefaults()];
+      diaryIndex=0;
+      diaryPersist();
+      diaryRender();
+      updateMetaUI();
+    }
+  });
+
+  // Keep enhanced metadata after normal page navigation.
+  const oldDiaryTurn = diaryTurn;
+  diaryTurn = function(direction){
+    oldDiaryTurn(direction);
+    setTimeout(()=>updateMetaUI(),450);
+  };
+
+  // Add richer fields to newly created pages.
+  const oldAddPage = diaryAddPage;
+  diaryAddPage = function(){
+    oldAddPage();
+    diaryPages[diaryIndex] = {...diaryPageDefaults(),...diaryPages[diaryIndex]};
+    diaryPersist();
+    updateMetaUI();
+  };
+
+  updateMetaUI();
 
 
   /* ---------- Personal Memory Diary ---------- */
@@ -1345,6 +1817,36 @@
   setPinBtn.onclick=()=>{pinMode='set';pinTitle.textContent='🔒 PIN सेट करें';pinHint.textContent='4 अंकों का PIN डालें';pinInput.value='';pinModal.classList.add('open');setTimeout(()=>pinInput.focus(),50)}; pinCancel.onclick=()=>pinModal.classList.remove('open');
   pinSubmit.onclick=()=>{const pin=pinInput.value.trim();if(!/^\d{4}$/.test(pin)){alert('कृपया 4 अंकों का PIN डालें।');return}if(pinMode==='set'){localStorage.setItem('puraniDiaryPinV1',pin);pinModal.classList.remove('open');alert('PIN सेट हो गया।')}else if(pin===localStorage.getItem('puraniDiaryPinV1')){pinModal.classList.remove('open');diaryOpen()}else alert('PIN गलत है।')}; pinInput.onkeydown=e=>{if(e.key==='Enter')pinSubmit.click()};
   normalizePages();renderEnhanced();
+
+
+  /* ===== Interactive Chai ===== */
+  const chaiCorner = document.getElementById('chaiCorner');
+  const chaiGlass = document.getElementById('chaiGlass');
+
+  function chaiSip(){
+    chaiGlass.classList.remove('chai-cup-sip');
+    void chaiGlass.offsetWidth;
+    chaiGlass.classList.add('chai-cup-sip');
+
+    // Browser-native speech, so no external audio file is required.
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+      const voice = new SpeechSynthesisUtterance('चाय की एक चुस्की...');
+      voice.lang = 'hi-IN';
+      voice.rate = 0.88;
+      voice.pitch = 0.92;
+      voice.volume = 0.8;
+      window.speechSynthesis.speak(voice);
+    }
+  }
+
+  chaiCorner.addEventListener('click', chaiSip);
+  chaiCorner.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      chaiSip();
+    }
+  });
 
 </script>
 
