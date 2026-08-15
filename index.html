@@ -1376,6 +1376,7 @@
   .chai-corner .chai-glass{
     pointer-events:none !important;
   }
+  .chai-corner img{-webkit-user-drag:none !important;}
 </style>
 </head>
 <body>
@@ -2169,150 +2170,95 @@
   });
 
 
-  /* ===== Chai drag-and-drop: drag without triggering sip audio ===== */
+  /* ===== Chai drag: robust mouse + touch, click only when not dragged ===== */
   (function(){
     const cup = document.getElementById('chaiCorner');
     if(!cup) return;
 
-    let dragging = false;
+    let active = false;
     let moved = false;
-    let suppressClick = false;
     let pointerId = null;
     let startX = 0, startY = 0;
     let offsetX = 0, offsetY = 0;
+    let suppressClickUntil = 0;
 
     function begin(e){
       if(e.pointerType === 'mouse' && e.button !== 0) return;
-
       const r = cup.getBoundingClientRect();
+      active = true;
+      moved = false;
+      pointerId = e.pointerId;
       startX = e.clientX;
       startY = e.clientY;
       offsetX = e.clientX - r.left;
       offsetY = e.clientY - r.top;
-
-      dragging = true;
-      moved = false;
-      pointerId = e.pointerId;
-      suppressClick = false;
-
       cup.classList.add('is-dragging');
-      try{ cup.setPointerCapture(e.pointerId); }catch(err){}
       e.preventDefault();
       e.stopPropagation();
     }
 
     function move(e){
-      if(!dragging || e.pointerId !== pointerId) return;
-
+      if(!active || e.pointerId !== pointerId) return;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-
-      if(Math.abs(dx) > 7 || Math.abs(dy) > 7){
-        moved = true;
-      }
-
+      if(!moved && Math.hypot(dx,dy) > 5) moved = true;
       if(!moved) return;
 
-      const x = Math.max(
-        0,
-        Math.min(window.innerWidth - cup.offsetWidth, e.clientX - offsetX)
-      );
-      const y = Math.max(
-        0,
-        Math.min(window.innerHeight - cup.offsetHeight, e.clientY - offsetY)
-      );
-
+      const x = Math.max(0, Math.min(window.innerWidth - cup.offsetWidth, e.clientX - offsetX));
+      const y = Math.max(0, Math.min(window.innerHeight - cup.offsetHeight, e.clientY - offsetY));
       cup.style.left = x + 'px';
       cup.style.top = y + 'px';
       cup.style.right = 'auto';
       cup.style.bottom = 'auto';
       cup.style.transform = 'none';
-
       e.preventDefault();
-      e.stopPropagation();
     }
 
     function finish(e){
-      if(!dragging || e.pointerId !== pointerId) return;
-
-      const wasMoved = moved;
-
-      dragging = false;
+      if(!active || e.pointerId !== pointerId) return;
+      const didDrag = moved;
+      active = false;
       moved = false;
       pointerId = null;
       cup.classList.remove('is-dragging');
 
-      try{ cup.releasePointerCapture(e.pointerId); }catch(err){}
-
-      if(wasMoved){
-        // This blocks the browser's click event generated after pointerup.
-        suppressClick = true;
-
+      if(didDrag){
+        suppressClickUntil = performance.now() + 700;
         const r = cup.getBoundingClientRect();
         try{
-          localStorage.setItem(
-            'puraniDiaryChaiPosition',
-            JSON.stringify({
-              left:r.left / window.innerWidth,
-              top:r.top / window.innerHeight
-            })
-          );
+          localStorage.setItem('puraniDiaryChaiPosition', JSON.stringify({
+            left:r.left / window.innerWidth,
+            top:r.top / window.innerHeight
+          }));
         }catch(err){}
-
-        // Clear the flag after the browser has dispatched the synthetic click.
-        setTimeout(()=>{ suppressClick = false; }, 350);
       }
-
       e.preventDefault();
-      e.stopPropagation();
-    }
-
-    function blockClickAfterDrag(e){
-      if(suppressClick){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        suppressClick = false;
-      }
     }
 
     cup.addEventListener('pointerdown', begin, {passive:false});
-    cup.addEventListener('pointermove', move, {passive:false});
-    cup.addEventListener('pointerup', finish, {passive:false});
-    cup.addEventListener('pointercancel', finish, {passive:false});
+    document.addEventListener('pointermove', move, {passive:false});
+    document.addEventListener('pointerup', finish, {passive:false});
+    document.addEventListener('pointercancel', finish, {passive:false});
 
-    // This listener is intentionally registered before the existing chai
-    // click listener and stops the click from reaching chaiSip() after drag.
-    cup.addEventListener('click', blockClickAfterDrag, true);
+    // A drag normally produces a synthetic click. Swallow only that click.
+    document.addEventListener('click', function(e){
+      if(performance.now() < suppressClickUntil && cup.contains(e.target)){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        suppressClickUntil = 0;
+      }
+    }, true);
 
-    cup.addEventListener('touchstart', e=>e.preventDefault(), {passive:false});
-
-    // Restore last position.
+    // Restore saved position.
     try{
-      const saved = JSON.parse(
-        localStorage.getItem('puraniDiaryChaiPosition') || 'null'
-      );
+      const saved = JSON.parse(localStorage.getItem('puraniDiaryChaiPosition') || 'null');
       if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)){
         requestAnimationFrame(()=>{
-          const x = Math.max(
-            0,
-            Math.min(
-              window.innerWidth - cup.offsetWidth,
-              saved.left * window.innerWidth
-            )
-          );
-          const y = Math.max(
-            0,
-            Math.min(
-              window.innerHeight - cup.offsetHeight,
-              saved.top * window.innerHeight
-            )
-          );
-
-          cup.style.left = x + 'px';
-          cup.style.top = y + 'px';
-          cup.style.right = 'auto';
-          cup.style.bottom = 'auto';
-          cup.style.transform = 'none';
+          const x=Math.max(0,Math.min(window.innerWidth-cup.offsetWidth,saved.left*window.innerWidth));
+          const y=Math.max(0,Math.min(window.innerHeight-cup.offsetHeight,saved.top*window.innerHeight));
+          cup.style.left=x+'px'; cup.style.top=y+'px';
+          cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
         });
       }
     }catch(err){}
