@@ -1352,6 +1352,22 @@
     }
   }
 
+
+  /* ===== Draggable chai ===== */
+  .chai-corner{
+    touch-action:none !important;
+    cursor:grab !important;
+  }
+  .chai-corner.is-dragging{
+    cursor:grabbing !important;
+    transition:none !important;
+    opacity:1 !important;
+    filter:drop-shadow(0 12px 16px rgba(0,0,0,.30)) saturate(1) !important;
+  }
+  .chai-corner.is-dragging .chai-glass{
+    animation:none !important;
+  }
+
 </style>
 </head>
 <body>
@@ -2143,6 +2159,110 @@
       chaiSip();
     }
   });
+
+
+  /* ===== Chai drag-and-drop ===== */
+  (function(){
+    const cup = document.getElementById('chaiCorner');
+    if(!cup) return;
+
+    let dragging = false;
+    let pointerId = null;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function getPoint(e){
+      return {x:e.clientX, y:e.clientY};
+    }
+
+    function startDrag(e){
+      // Left mouse button only; touch/pen always allowed.
+      if(e.pointerType === 'mouse' && e.button !== 0) return;
+
+      const r = cup.getBoundingClientRect();
+      const pt = getPoint(e);
+      offsetX = pt.x - r.left;
+      offsetY = pt.y - r.top;
+      dragging = true;
+      pointerId = e.pointerId;
+
+      cup.classList.add('is-dragging');
+      cup.setPointerCapture?.(pointerId);
+      e.preventDefault();
+    }
+
+    function moveDrag(e){
+      if(!dragging || e.pointerId !== pointerId) return;
+
+      const w = cup.offsetWidth;
+      const h = cup.offsetHeight;
+      const maxX = window.innerWidth - w;
+      const maxY = window.innerHeight - h;
+
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
+
+      // Keep the cup fully inside the viewport.
+      x = Math.max(0, Math.min(maxX, x));
+      y = Math.max(0, Math.min(maxY, y));
+
+      cup.style.left = x + 'px';
+      cup.style.top = y + 'px';
+      cup.style.bottom = 'auto';
+      cup.style.transform = 'none';
+
+      e.preventDefault();
+    }
+
+    function endDrag(e){
+      if(!dragging || (e.pointerId !== undefined && e.pointerId !== pointerId)) return;
+
+      dragging = false;
+      pointerId = null;
+      cup.classList.remove('is-dragging');
+      try{ cup.releasePointerCapture?.(e.pointerId); }catch(err){}
+
+      // Remember the user's chosen position for this browser.
+      try{
+        const r = cup.getBoundingClientRect();
+        localStorage.setItem('puraniDiaryChaiPosition', JSON.stringify({
+          left:r.left / window.innerWidth,
+          top:r.top / window.innerHeight
+        }));
+      }catch(err){}
+    }
+
+    cup.addEventListener('pointerdown', startDrag);
+    cup.addEventListener('pointermove', moveDrag);
+    cup.addEventListener('pointerup', endDrag);
+    cup.addEventListener('pointercancel', endDrag);
+
+    // Restore the last dragged position.
+    try{
+      const saved = JSON.parse(localStorage.getItem('puraniDiaryChaiPosition') || 'null');
+      if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)){
+        requestAnimationFrame(()=>{
+          const x = Math.max(0, Math.min(window.innerWidth-cup.offsetWidth, saved.left*window.innerWidth));
+          const y = Math.max(0, Math.min(window.innerHeight-cup.offsetHeight, saved.top*window.innerHeight));
+          cup.style.left = x+'px';
+          cup.style.top = y+'px';
+          cup.style.bottom = 'auto';
+          cup.style.transform = 'none';
+        });
+      }
+    }catch(err){}
+
+    window.addEventListener('resize',()=>{
+      if(dragging) return;
+      const r = cup.getBoundingClientRect();
+      const x = Math.max(0, Math.min(window.innerWidth-cup.offsetWidth, r.left));
+      const y = Math.max(0, Math.min(window.innerHeight-cup.offsetHeight, r.top));
+      cup.style.left = x+'px';
+      cup.style.top = y+'px';
+      cup.style.bottom = 'auto';
+      cup.style.transform = 'none';
+    });
+  })();
 
 </script>
 
