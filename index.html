@@ -1323,6 +1323,35 @@
     }
   }
 
+
+  /* ===== Chai: centered directly in front of the red sign ===== */
+  .chai-corner{
+    left:50% !important;
+    top:16.5vh !important;
+    bottom:auto !important;
+    width:160px !important;
+    height:185px !important;
+    transform:translateX(-50%) !important;
+  }
+  @media(max-width:900px){
+    .chai-corner{
+      left:50% !important;
+      top:17vh !important;
+      width:125px !important;
+      height:150px !important;
+      transform:translateX(-50%) !important;
+    }
+  }
+  @media(max-width:600px){
+    .chai-corner{
+      left:50% !important;
+      top:20vh !important;
+      width:92px !important;
+      height:112px !important;
+      transform:translateX(-50%) !important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -2015,23 +2044,95 @@
   const chaiCorner = document.getElementById('chaiCorner');
   const chaiGlass = document.getElementById('chaiGlass');
 
+  let chaiSipAudio = null;
+  let chaiSipFadeTimer = null;
+  let chaiMusicRestoreTimer = null;
+
+  function getMusicVolume(){
+    try{
+      if(typeof ytPlayer !== 'undefined' && ytPlayer && typeof ytPlayer.getVolume === 'function'){
+        return Number(ytPlayer.getVolume()) || 0;
+      }
+    }catch(e){}
+    return 0;
+  }
+
+  function setMusicVolume(value){
+    const v = Math.max(0, Math.min(100, Math.round(value)));
+    try{
+      if(typeof ytPlayer !== 'undefined' && ytPlayer && typeof ytPlayer.setVolume === 'function'){
+        ytPlayer.setVolume(v);
+      }
+    }catch(e){}
+  }
+
+  function fadeMusicTo(target, duration=260, done){
+    clearInterval(chaiMusicRestoreTimer);
+    const startVol = getMusicVolume();
+    const steps = 13;
+    const stepMs = Math.max(16, Math.round(duration / steps));
+    let step = 0;
+    chaiMusicRestoreTimer = setInterval(()=>{
+      step++;
+      const t = Math.min(1, step / steps);
+      setMusicVolume(startVol + (target - startVol) * t);
+      if(t >= 1){
+        clearInterval(chaiMusicRestoreTimer);
+        if(done) done();
+      }
+    }, stepMs);
+  }
+
   function chaiSip(){
-    // Restart the shake animation on every click, even if the previous one
-    // has not finished yet.
     chaiGlass.classList.remove('chai-cup-sip');
     void chaiGlass.offsetWidth;
     chaiGlass.classList.add('chai-cup-sip');
 
-    // Play the user's uploaded sip audio from the beginning on every click.
-    const audio = document.getElementById('chaiSipAudio');
-    if(audio){
+    // Restart the uploaded sip/dialogue audio on every click.
+    if(chaiSipAudio){
       try{
-        audio.currentTime = 0;
-        const playPromise = audio.play();
-        if(playPromise && typeof playPromise.catch === 'function'){
-          playPromise.catch(()=>{});
-        }
+        chaiSipAudio.pause();
+        chaiSipAudio.currentTime = 0;
       }catch(e){}
+    }
+    chaiSipAudio = new Audio('chai-sip.m4a');
+    chaiSipAudio.preload = 'auto';
+    chaiSipAudio.volume = 1;
+
+    // Lower the music only while the chai audio is actually playing.
+    const musicWasPlaying =
+      typeof ytPlayer !== 'undefined' &&
+      ytPlayer &&
+      typeof YT !== 'undefined' &&
+      typeof ytPlayer.getPlayerState === 'function' &&
+      ytPlayer.getPlayerState() === YT.PlayerState.PLAYING;
+
+    const originalMusicVolume = getMusicVolume();
+
+    chaiSipAudio.addEventListener('play', ()=>{
+      if(musicWasPlaying){
+        fadeMusicTo(Math.max(12, originalMusicVolume * 0.22), 220);
+      }
+    }, {once:true});
+
+    chaiSipAudio.addEventListener('ended', ()=>{
+      if(musicWasPlaying){
+        fadeMusicTo(originalMusicVolume, 360);
+      }
+    }, {once:true});
+
+    chaiSipAudio.addEventListener('error', ()=>{
+      if(musicWasPlaying){
+        fadeMusicTo(originalMusicVolume, 300);
+      }
+    }, {once:true});
+
+    const playPromise = chaiSipAudio.play();
+    if(playPromise && typeof playPromise.catch === 'function'){
+      playPromise.catch(()=>{
+        // If playback is blocked, restore music immediately.
+        if(musicWasPlaying) setMusicVolume(originalMusicVolume);
+      });
     }
   }
 
