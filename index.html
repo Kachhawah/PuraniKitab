@@ -804,28 +804,33 @@
   /* ===== Real Chai PNG ===== */
   .chai-corner{
     position:fixed;
-    left:18px;
-    bottom:18px;
-    z-index:31;
-    width:62px;
-    height:78px;
+    left:50%;
+    top:16.5vh;
+    bottom:auto;
+    width:160px;
+    height:185px;
+    transform:translateX(-50%);
+    z-index:21;
     display:flex;
     align-items:center;
     justify-content:center;
-    cursor:pointer;
+    cursor:grab;
     user-select:none;
+    -webkit-user-select:none;
     -webkit-tap-highlight-color:transparent;
+    touch-action:none;
   }
   .chai-glass{
     display:block;
     position:relative;
-    width:54px;
-    height:68px;
+    width:100%;
+    height:100%;
     object-fit:contain;
     transform:translateZ(0);
-    transform-origin:50% 92%;
+    transform-origin:50% 90%;
     filter:drop-shadow(0 8px 10px rgba(0,0,0,.28));
     pointer-events:none;
+    -webkit-user-drag:none;
   }
   .chai-cup-sip{
     animation:chaiSip .62s cubic-bezier(.2,.8,.3,1);
@@ -840,12 +845,6 @@
     100%{transform:rotate(0deg) translate(0,0)}
   }
   .chai-label{display:none !important}
-
-  @media(max-width:600px){
-    .chai-corner{left:8px;bottom:12px;width:64px;height:82px}
-    .chai-glass{transform:scale(.88)}
-  }
-
 
   /* ===== Minimal UI cleanup ===== */
   .memory-tools{
@@ -879,15 +878,6 @@
   .diary-hint{display:none !important}
   .chai-label{display:none !important}
 
-  /* Chai should feel like a small environmental detail, not a UI control. */
-  .chai-corner{
-    position:fixed;left:18px;bottom:18px;z-index:31;
-    width:54px;height:70px;
-    opacity:.88;
-  }
-  .chai-glass{transform:scale(.72);transform-origin:bottom center}
-  .chai-corner:hover .chai-glass{filter:brightness(1.08)}
-
   /* Keep the player compact and centered. */
   .player, .music-player, .player-card{
     max-width:min(560px,calc(100vw - 32px)) !important;
@@ -905,199 +895,6 @@
   /* Never show the diary close button in the center of the hero.
      It belongs to the diary sheet itself. */
   .diary-close{top:14px;right:16px}
-
-  /* On mobile, reduce all floating controls further. */
-  @media(max-width:600px){
-    .memory-tools{top:10px;left:10px;gap:5px}
-    .memory-icon,.extra-btn{width:32px;height:32px;font-size:12px}
-    .extra-tools{top:10px;right:10px}
-    .diary-toggle{top:10px !important;right:50px !important;padding:7px 10px !important}
-    .chai-corner{left:6px;bottom:9px;width:46px;height:58px}
-  }
-
-
-  /* ===== Mobile: desktop-like, clutter-free experience ===== */
-  @media (max-width:600px){
-    body{
-      min-height:100svh;
-      overflow:hidden;
-      background-position:center center !important;
-      background-size:cover !important;
-    }
-
-    /* Keep only the two essential corner controls visible. */
-    .memory-tools{
-      top:10px !important;
-      left:10px !important;
-      gap:5px !important;
-    }
-    .memory-tools .memory-icon{
-      width:32px !important;
-      height:32px !important;
-      font-size:12px !important;
-    }
-
-    .diary-toggle{
-      top:10px !important;
-      right:48px !important;
-      max-width:118px;
-      padding:7px 10px !important;
-      font-size:11px !important;
-      white-space:nowrap;
-    }
-
-    /* Advanced features remain available inside drawers, not on the hero. */
-    .extra-tools{display:none !important;}
-    .extra-drawer .extra-panel{
-      width:calc(100vw - 16px) !important;
-      max-height:calc(100svh - 16px) !important;
-      right:8px !important;
-      top:8px !important;
-      padding:16px !important;
-    }
-
-    /* Make the music player the single main foreground element. */
-    .player,
-    .music-player,
-    .player-card{
-      position:fixed !important;
-      left:50% !important;
-      right:auto !important;
-      bottom:18px !important;
-      transform:translateX(-50%) !important;
-      width:min(92vw,520px) !important;
-      max-width:92vw !important;
-      margin:0 !important;
-      z-index:25 !important;
-    }
-
-    /* If the project uses these common player wrappers, keep them compact. */
-    .player-inner,
-    .music-player-inner{
-      min-height:64px !important;
-    }
-
-    /* Hide nonessential helper copy around the hero. */
-    .diary-hint,
-    .chai-label{
-      display:none !important;
-    }
-
-    /* Chai becomes a tiny environmental object, not another UI card. */
-    .chai-corner{
-      left:8px !important;
-      bottom:16px !important;
-      width:42px !important;
-      height:54px !important;
-      opacity:.82;
-      z-index:24 !important;
-    }
-    .chai-glass{
-      width:42px !important;
-      height:54px !important;
-    }
-
-    /* Keep shayari centered and readable without competing with player. */
-    .shayari,
-    .quote,
-    .poetry,
-    .shayari-text{
-      max-width:88vw !important;
-      text-align:center !important;
-      line-height:1.55 !important;
-    }
-
-    /* Diary itself uses nearly the full screen only when opened. */
-    .diary-overlay{
-      padding:8px !important;
-    }
-    .diary{
-      width:96vw !important;
-      height:86svh !important;
-    }
-
-    /* Smaller diary controls, but still comfortably tappable. */
-    .diary-footer{
-      left:22px !important;
-      right:22px !important;
-      bottom:12px !important;
-    }
-    .diary-btn{
-      padding:6px 9px !important;
-      font-size:10px !important;
-    }
-  }
-
-
-  /* ===== Chai: environmental placement ===== */
-  .chai-corner{
-    position:fixed !important;
-    left:clamp(82px, 8.5vw, 145px) !important;
-    bottom:clamp(130px, 17vh, 190px) !important;
-    z-index:20 !important;
-    width:clamp(82px, 7vw, 112px) !important;
-    height:clamp(105px, 9vw, 138px) !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    cursor:pointer !important;
-    user-select:none !important;
-    -webkit-tap-highlight-color:transparent !important;
-    opacity:.93 !important;
-    filter:drop-shadow(0 7px 9px rgba(0,0,0,.22)) !important;
-    transition:filter .2s ease, opacity .2s ease !important;
-  }
-  .chai-corner:hover{
-    opacity:1 !important;
-    filter:drop-shadow(0 9px 12px rgba(0,0,0,.28)) !important;
-  }
-  .chai-glass{
-    width:100% !important;
-    height:100% !important;
-    object-fit:contain !important;
-    transform-origin:50% 92% !important;
-    pointer-events:none !important;
-    mix-blend-mode:normal !important;
-  }
-  @media(max-width:600px){
-    .chai-corner{
-      left:clamp(46px, 13vw, 82px) !important;
-      bottom:clamp(92px, 15vh, 132px) !important;
-      width:clamp(64px, 19vw, 88px) !important;
-      height:clamp(82px, 24vw, 108px) !important;
-      opacity:.9 !important;
-    }
-  }
-
-
-  /* ===== Chai: match the marked background area ===== */
-  .chai-corner{
-    position:fixed !important;
-    left:33.5vw !important;
-    top:21.5vh !important;
-    bottom:auto !important;
-    width:5.5vw !important;
-    height:21vh !important;
-    z-index:21 !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    cursor:pointer !important;
-    opacity:.92 !important;
-    filter:drop-shadow(0 7px 9px rgba(30,16,5,.20)) saturate(.94) !important;
-    transition:filter .2s ease, opacity .2s ease !important;
-  }
-  .chai-corner:hover{
-    opacity:1 !important;
-    filter:drop-shadow(0 9px 12px rgba(30,16,5,.26)) saturate(1) !important;
-  }
-  .chai-glass{
-    width:100% !important;
-    height:100% !important;
-    object-fit:contain !important;
-    pointer-events:none !important;
-    transform-origin:50% 90% !important;
-  }
 
   /* ===== Diary: cleaner visual hierarchy ===== */
   .diary-overlay{
@@ -1197,10 +994,9 @@
 
   @media(max-width:900px){
     .chai-corner{
-      left:17vw !important;
-      top:27vh !important;
-      width:12vw !important;
-      height:20vh !important;
+      top:17vh;
+      width:125px;
+      height:150px;
     }
     .diary{
       width:min(94vw,620px) !important;
@@ -1209,13 +1005,18 @@
   }
 
   @media(max-width:600px){
+    .memory-tools{top:10px !important;left:10px !important;gap:5px !important}
+    .memory-tools .memory-icon{width:32px !important;height:32px !important;font-size:12px !important}
+    .diary-toggle{top:10px !important;right:48px !important;max-width:118px;padding:7px 10px !important;font-size:11px !important;white-space:nowrap}
+    .extra-tools{display:none !important}
+    .extra-drawer .extra-panel{width:calc(100vw - 16px) !important;max-height:calc(100svh - 16px) !important;right:8px !important;top:8px !important;padding:16px !important}
+
     .chai-corner{
-      left:12vw !important;
-      top:28vh !important;
-      width:18vw !important;
-      height:23vh !important;
-      opacity:.9 !important;
+      top:20vh;
+      width:92px;
+      height:112px;
     }
+
     .diary-overlay{
       padding:7px !important;
     }
@@ -1261,122 +1062,20 @@
     }
   }
 
-
-  /* ===== Chai: exact marked scale ===== */
-  .chai-corner{
-    left:31.2vw !important;
-    top:17.5vh !important;
-    bottom:auto !important;
-    width:160px !important;
-    height:185px !important;
-    z-index:21 !important;
-  }
-  .chai-glass{
-    width:100% !important;
-    height:100% !important;
-    object-fit:contain !important;
-  }
-
-  @media(max-width:900px){
-    .chai-corner{
-      left:27vw !important;
-      top:18vh !important;
-      width:125px !important;
-      height:150px !important;
-    }
-  }
-
-  @media(max-width:600px){
-    .chai-corner{
-      left:15vw !important;
-      top:24vh !important;
-      width:92px !important;
-      height:112px !important;
-    }
-  }
-
-
-  /* ===== Chai: same size, moved onto the red board ===== */
-  .chai-corner{
-    left:31.2vw !important;
-    top:10.5vh !important;
-    bottom:auto !important;
-    width:160px !important;
-    height:185px !important;
-  }
-
-  @media(max-width:900px){
-    .chai-corner{
-      left:27vw !important;
-      top:11vh !important;
-      width:125px !important;
-      height:150px !important;
-    }
-  }
-
-  @media(max-width:600px){
-    .chai-corner{
-      left:15vw !important;
-      top:16vh !important;
-      width:92px !important;
-      height:112px !important;
-    }
-  }
-
-
-  /* ===== Chai: centered directly in front of the red sign ===== */
-  .chai-corner{
-    left:50% !important;
-    top:16.5vh !important;
-    bottom:auto !important;
-    width:160px !important;
-    height:185px !important;
-    transform:translateX(-50%) !important;
-  }
-  @media(max-width:900px){
-    .chai-corner{
-      left:50% !important;
-      top:17vh !important;
-      width:125px !important;
-      height:150px !important;
-      transform:translateX(-50%) !important;
-    }
-  }
-  @media(max-width:600px){
-    .chai-corner{
-      left:50% !important;
-      top:20vh !important;
-      width:92px !important;
-      height:112px !important;
-      transform:translateX(-50%) !important;
-    }
-  }
-
-
-  /* ===== Draggable chai ===== */
-  .chai-corner{
-    touch-action:none !important;
-    cursor:grab !important;
-  }
+  /* ===== Draggable chai active states ===== */
   .chai-corner.is-dragging{
     cursor:grabbing !important;
     transition:none !important;
     opacity:1 !important;
-    filter:drop-shadow(0 12px 16px rgba(0,0,0,.30)) saturate(1) !important;
+    filter:drop-shadow(0 14px 20px rgba(0,0,0,.35)) saturate(1.05) !important;
   }
   .chai-corner.is-dragging .chai-glass{
     animation:none !important;
   }
-
-  .chai-corner{
-    touch-action:none !important;
-    -webkit-user-select:none !important;
+  .chai-corner img{
+    -webkit-user-drag:none !important;
     user-select:none !important;
   }
-  .chai-corner .chai-glass{
-    pointer-events:none !important;
-  }
-  .chai-corner img{-webkit-user-drag:none !important;}
 </style>
 </head>
 <body>
@@ -1386,9 +1085,6 @@
        aria-label="चाय की चुस्की">
     <img class="chai-glass" id="chaiGlass" src="chai.png" alt="चाय का गिलास" draggable="false">
   </div>
-
-
-  
 
   <div class="extra-drawer" id="extraDrawer">
     <div class="extra-panel">
@@ -1446,7 +1142,6 @@
     </div>
   </div>
 
-
   <div class="memory-tools">
     <button class="memory-icon" id="archiveBtn" title="मेरी यादें">☷</button>
   </div>
@@ -1482,7 +1177,6 @@
       </div>
     </div>
   </div>
-
 
   <button class="diary-toggle" id="diaryToggle" type="button">📖 मेरी डायरी</button>
   <div class="diary-hint">अपनी यादें लिखने के लिए डायरी खोलें</div>
@@ -1537,7 +1231,6 @@
     </div>
   </div>
 
-
   <div class="bottom-cluster">
     <div class="shayari-wrap">
       <p class="shayari" id="shayariText"></p>
@@ -1578,8 +1271,6 @@
 
 <script>
   let currentTrackTitle='';
-
-
 
   /* ---------- Personal Memory Diary ---------- */
   const diaryToggle = document.getElementById('diaryToggle');
@@ -1687,6 +1378,7 @@
   diaryPrev.addEventListener('click', () => diaryTurn(-1));
   diaryNext.addEventListener('click', () => diaryTurn(1));
   diaryClose.addEventListener('click', diaryClosePanel);
+
   // Real-book style page turning: swipe left/right on the diary.
   let diarySwipeStartX = null;
   let diarySwipeStartY = null;
@@ -1710,14 +1402,11 @@
     diarySwipeStartY = null;
     diarySwipeActive = false;
 
-    // Ignore mostly vertical gestures.
     if(Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
 
     if(dx < 0){
-      // Swipe left = next page
       diaryTurn(1);
     }else{
-      // Swipe right = previous page
       diaryTurn(-1);
     }
   }
@@ -1726,7 +1415,6 @@
   diaryPage.addEventListener('touchstart', diarySwipeStart, {passive:true});
   diaryPage.addEventListener('touchend', diarySwipeEnd, {passive:true});
 
-  // Desktop trackpads/mice can also drag horizontally like a real page.
   diaryPage.addEventListener('pointerdown', diarySwipeStart);
   diaryPage.addEventListener('pointerup', diarySwipeEnd);
 
@@ -1742,7 +1430,6 @@
   document.addEventListener('keydown', (e) => {
     if(!diaryOverlay.classList.contains('is-open')) return;
     if(e.key === 'Escape') diaryClosePanel();
-
   });
 
   diaryLoad();
@@ -1921,7 +1608,6 @@
   let ytPlayer = null;
   let progressTimer = null;
 
-  // Load YouTube IFrame API
   const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
@@ -2064,13 +1750,11 @@
   pinSubmit.onclick=()=>{const pin=pinInput.value.trim();if(!/^\d{4}$/.test(pin)){alert('कृपया 4 अंकों का PIN डालें।');return}if(pinMode==='set'){localStorage.setItem('puraniDiaryPinV1',pin);pinModal.classList.remove('open');alert('PIN सेट हो गया।')}else if(pin===localStorage.getItem('puraniDiaryPinV1')){pinModal.classList.remove('open');diaryOpen()}else alert('PIN गलत है।')}; pinInput.onkeydown=e=>{if(e.key==='Enter')pinSubmit.click()};
   normalizePages();renderEnhanced();
 
-
   /* ===== Interactive Chai ===== */
   const chaiCorner = document.getElementById('chaiCorner');
   const chaiGlass = document.getElementById('chaiGlass');
 
   let chaiSipAudio = null;
-  let chaiSipFadeTimer = null;
   let chaiMusicRestoreTimer = null;
 
   function getMusicVolume(){
@@ -2113,7 +1797,6 @@
     void chaiGlass.offsetWidth;
     chaiGlass.classList.add('chai-cup-sip');
 
-    // Restart the uploaded sip/dialogue audio on every click.
     if(chaiSipAudio){
       try{
         chaiSipAudio.pause();
@@ -2124,7 +1807,6 @@
     chaiSipAudio.preload = 'auto';
     chaiSipAudio.volume = 1;
 
-    // Lower the music only while the chai audio is actually playing.
     const musicWasPlaying =
       typeof ytPlayer !== 'undefined' &&
       ytPlayer &&
@@ -2155,7 +1837,6 @@
     const playPromise = chaiSipAudio.play();
     if(playPromise && typeof playPromise.catch === 'function'){
       playPromise.catch(()=>{
-        // If playback is blocked, restore music immediately.
         if(musicWasPlaying) setMusicVolume(originalMusicVolume);
       });
     }
@@ -2169,68 +1850,104 @@
     }
   });
 
-
-  /* ===== Chai drag: mouse + touch, no accidental sip on drag ===== */
+  /* ===== Chai Draggable: Smooth Mouse & Touch Dragging ===== */
   (function(){
-    const cup=document.getElementById('chaiCorner');
+    const cup = document.getElementById('chaiCorner');
     if(!cup) return;
-    let dragging=false, moved=false, suppress=false;
-    let startX=0,startY=0,offX=0,offY=0;
 
-    function point(e){
-      if(e.touches && e.touches.length) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
-      if(e.changedTouches && e.changedTouches.length) return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
-      return {x:e.clientX,y:e.clientY};
-    }
-    function begin(e){
-      if(e.type==='mousedown' && e.button!==0) return;
-      const p=point(e), r=cup.getBoundingClientRect();
-      dragging=true; moved=false; startX=p.x; startY=p.y; offX=p.x-r.left; offY=p.y-r.top;
-      cup.classList.add('is-dragging');
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    function move(e){
-      if(!dragging) return;
-      const p=point(e), dx=p.x-startX, dy=p.y-startY;
-      if(!moved && Math.hypot(dx,dy)>8) moved=true;
-      if(!moved) return;
-      const x=Math.max(0,Math.min(innerWidth-cup.offsetWidth,p.x-offX));
-      const y=Math.max(0,Math.min(innerHeight-cup.offsetHeight,p.y-offY));
-      cup.style.left=x+'px'; cup.style.top=y+'px'; cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    function finish(e){
-      if(!dragging) return;
-      const didDrag=moved;
-      dragging=false; moved=false; cup.classList.remove('is-dragging');
-      if(didDrag){
-        suppress=true;
-        const r=cup.getBoundingClientRect();
-        try{localStorage.setItem('puraniDiaryChaiPosition',JSON.stringify({left:r.left/innerWidth,top:r.top/innerHeight}));}catch(err){}
-        setTimeout(()=>suppress=false,500);
-      }
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    cup.addEventListener('mousedown',begin,{passive:false});
-    document.addEventListener('mousemove',move,{passive:false});
-    document.addEventListener('mouseup',finish,{passive:false});
-    cup.addEventListener('touchstart',begin,{passive:false});
-    document.addEventListener('touchmove',move,{passive:false});
-    document.addEventListener('touchend',finish,{passive:false});
-    document.addEventListener('touchcancel',finish,{passive:false});
-    cup.addEventListener('click',e=>{ if(suppress){e.preventDefault();e.stopImmediatePropagation();suppress=false;} },true);
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0, startY = 0;
+    let initialLeft = 0, initialTop = 0;
+    let suppressClick = false;
 
+    // Restore previously saved position from localStorage
     try{
-      const saved=JSON.parse(localStorage.getItem('puraniDiaryChaiPosition')||'null');
-      if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) requestAnimationFrame(()=>{
-        const x=Math.max(0,Math.min(innerWidth-cup.offsetWidth,saved.left*innerWidth));
-        const y=Math.max(0,Math.min(innerHeight-cup.offsetHeight,saved.top*innerHeight));
-        cup.style.left=x+'px'; cup.style.top=y+'px'; cup.style.right='auto'; cup.style.bottom='auto'; cup.style.transform='none';
-      });
-    }catch(err){}
+      const saved = JSON.parse(localStorage.getItem('puraniDiaryChaiPos') || 'null');
+      if(saved && typeof saved.left === 'number' && typeof saved.top === 'number'){
+        const x = Math.max(0, Math.min(window.innerWidth - cup.offsetWidth, saved.left * window.innerWidth));
+        const y = Math.max(0, Math.min(window.innerHeight - cup.offsetHeight, saved.top * window.innerHeight));
+        cup.style.setProperty('left', x + 'px', 'important');
+        cup.style.setProperty('top', y + 'px', 'important');
+        cup.style.setProperty('right', 'auto', 'important');
+        cup.style.setProperty('bottom', 'auto', 'important');
+        cup.style.setProperty('transform', 'none', 'important');
+      }
+    }catch(e){}
+
+    function onPointerDown(e){
+      if(e.button !== undefined && e.button !== 0) return;
+      isDragging = true;
+      hasMoved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = cup.getBoundingClientRect();
+      initialLeft = rect.left;
+      initialTop = rect.top;
+
+      cup.classList.add('is-dragging');
+      if(cup.setPointerCapture){
+        try{ cup.setPointerCapture(e.pointerId); }catch(err){}
+      }
+    }
+
+    function onPointerMove(e){
+      if(!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if(!hasMoved && Math.hypot(dx, dy) > 4){
+        hasMoved = true;
+      }
+
+      if(hasMoved){
+        const newX = Math.max(0, Math.min(window.innerWidth - cup.offsetWidth, initialLeft + dx));
+        const newY = Math.max(0, Math.min(window.innerHeight - cup.offsetHeight, initialTop + dy));
+
+        cup.style.setProperty('left', newX + 'px', 'important');
+        cup.style.setProperty('top', newY + 'px', 'important');
+        cup.style.setProperty('right', 'auto', 'important');
+        cup.style.setProperty('bottom', 'auto', 'important');
+        cup.style.setProperty('transform', 'none', 'important');
+      }
+    }
+
+    function onPointerUp(e){
+      if(!isDragging) return;
+      isDragging = false;
+      cup.classList.remove('is-dragging');
+
+      if(cup.releasePointerCapture && e.pointerId !== undefined){
+        try{ cup.releasePointerCapture(e.pointerId); }catch(err){}
+      }
+
+      if(hasMoved){
+        suppressClick = true;
+        const rect = cup.getBoundingClientRect();
+        try{
+          localStorage.setItem('puraniDiaryChaiPos', JSON.stringify({
+            left: rect.left / window.innerWidth,
+            top: rect.top / window.innerHeight
+          }));
+        }catch(err){}
+        setTimeout(()=>{ suppressClick = false; }, 350);
+      }
+    }
+
+    cup.addEventListener('pointerdown', onPointerDown);
+    cup.addEventListener('pointermove', onPointerMove);
+    cup.addEventListener('pointerup', onPointerUp);
+    cup.addEventListener('pointercancel', onPointerUp);
+
+    // Prevent accidental chaiSip audio when dragging
+    cup.addEventListener('click', function(e){
+      if(suppressClick || hasMoved){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        suppressClick = false;
+      }
+    }, true);
   })();
 </script>
 
