@@ -557,7 +557,7 @@
     bottom:22px;
     display:flex;
     align-items:center;
-    justify-content:center;
+    justify-content:space-between;
     gap:12px;
     font-family:'Baloo 2',sans-serif;
     color:#8b6738;
@@ -574,6 +574,11 @@
     cursor:pointer;
   }
   .diary-btn:hover{background:rgba(255,255,255,.45)}
+  .diary-btn:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    background:rgba(255,255,255,.12);
+  }
   .diary-page-number{white-space:nowrap}
 
   .diary-hint{
@@ -639,6 +644,10 @@
 
           <div class="diary-footer">
             <div class="diary-page-number" id="diaryPageNumber">पन्ना 1</div>
+            <div class="diary-actions">
+              <button class="diary-btn" id="diaryPrev" type="button">‹ पिछला पन्ना</button>
+              <button class="diary-btn" id="diaryNext" type="button">अगला पन्ना ›</button>
+            </div>
           </div>
         </section>
       </div>
@@ -694,6 +703,8 @@
   const diaryText = document.getElementById('diaryText');
   const diaryDate = document.getElementById('diaryDate');
   const diaryPageNumber = document.getElementById('diaryPageNumber');
+  const diaryPrev = document.getElementById('diaryPrev');
+  const diaryNext = document.getElementById('diaryNext');
 
   const DIARY_KEY = 'puraniDiaryMemoriesV1';
   let diaryPages = [];
@@ -730,6 +741,7 @@
     diaryText.value = page.text;
     diaryPageNumber.textContent = `पन्ना ${diaryIndex + 1} / ${diaryPages.length}`;
     diaryPrev.disabled = diaryIndex === 0;
+    diaryNext.textContent = diaryIndex === diaryPages.length - 1 ? 'नया पन्ना ›' : 'अगला पन्ना ›';
   }
 
   function diarySaveCurrent(){
@@ -786,6 +798,8 @@
   }
 
   diaryToggle.addEventListener('click', diaryOpen);
+  diaryPrev.addEventListener('click', () => diaryTurn(-1));
+  diaryNext.addEventListener('click', () => diaryTurn(1));
   diaryClose.addEventListener('click', diaryClosePanel);
   // Real-book style page turning: swipe left/right on the diary.
   let diarySwipeStartX = null;
