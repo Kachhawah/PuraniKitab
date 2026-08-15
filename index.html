@@ -616,9 +616,162 @@
     .diary-btn{padding:6px 9px}
   }
 
+
+  /* ===== Memory features: minimal drawer + diary utilities ===== */
+  .memory-tools{
+    position:fixed; top:24px; left:24px; z-index:30;
+    display:flex; gap:6px;
+  }
+  .memory-icon{
+    width:36px;height:36px;border:1px solid rgba(255,220,180,.28);
+    border-radius:50%;background:rgba(20,10,5,.55);color:var(--cream);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    cursor:pointer;font-size:15px;
+  }
+  .memory-icon:hover{transform:scale(1.05);border-color:rgba(255,220,180,.55)}
+  .memory-drawer{
+    position:fixed;inset:0;z-index:50;display:none;
+    background:rgba(8,4,2,.35);backdrop-filter:blur(3px);
+  }
+  .memory-drawer.open{display:block}
+  .memory-panel{
+    position:absolute;left:18px;top:18px;width:min(370px,calc(100vw - 36px));
+    max-height:calc(100vh - 36px);overflow:auto;padding:20px;
+    border:1px solid rgba(255,220,180,.22);border-radius:18px;
+    background:rgba(24,12,6,.86);color:var(--cream);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    box-shadow:0 20px 70px rgba(0,0,0,.45);
+  }
+  .memory-panel h3{font-family:'Baloo 2',sans-serif;font-size:18px;margin-bottom:10px}
+  .memory-close{float:right;border:0;background:none;color:var(--cream);font-size:22px;cursor:pointer}
+  .memory-search{
+    width:100%;padding:9px 12px;border-radius:999px;
+    border:1px solid rgba(255,220,180,.22);outline:0;
+    background:rgba(255,255,255,.07);color:var(--cream);
+    font-family:'Baloo 2',sans-serif;
+  }
+  .memory-search::placeholder{color:rgba(245,233,216,.45)}
+  .memory-count{font-size:11px;opacity:.65;margin:9px 2px}
+  .memory-list{display:flex;flex-direction:column;gap:7px}
+  .memory-item{
+    padding:10px;border:1px solid rgba(255,220,180,.14);
+    border-radius:12px;background:rgba(255,255,255,.045);cursor:pointer;
+  }
+  .memory-item:hover{background:rgba(255,255,255,.08)}
+  .memory-item strong{display:block;font-size:12px}
+  .memory-item span{display:block;font-size:10px;opacity:.62;margin-top:3px}
+  .memory-empty{font-size:12px;opacity:.6;padding:14px 4px}
+  .memory-section{margin-top:18px;padding-top:15px;border-top:1px solid rgba(255,220,180,.12)}
+  .memory-row{display:flex;gap:7px;flex-wrap:wrap}
+  .memory-small-btn{
+    border:1px solid rgba(255,220,180,.2);border-radius:999px;
+    background:rgba(255,255,255,.06);color:var(--cream);
+    padding:7px 10px;font-family:'Baloo 2',sans-serif;cursor:pointer;font-size:11px;
+  }
+
+  .diary-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .diary-mood{
+    border:1px solid rgba(91,55,24,.22);background:rgba(255,255,255,.24);
+    color:#4b301c;border-radius:999px;padding:5px 8px;font-size:12px;cursor:pointer;
+  }
+  .diary-time{font-family:'Baloo 2',sans-serif;font-size:11px;color:#987550}
+  .diary-photo-wrap{position:absolute;right:54px;top:45px;z-index:2}
+  .diary-photo{
+    display:none;width:92px;height:92px;object-fit:cover;padding:5px;
+    background:#fff8e9;box-shadow:0 5px 15px rgba(50,25,5,.18);
+    transform:rotate(3deg);cursor:pointer;
+  }
+  .diary-photo.has-photo{display:block}
+  .diary-photo-label{font-family:'Baloo 2',sans-serif;font-size:9px;color:#987550;text-align:center;margin-top:3px}
+  .diary-tools{
+    position:absolute;right:54px;bottom:54px;display:flex;gap:5px;z-index:3;
+  }
+  .diary-tool-btn{
+    width:30px;height:30px;border:1px solid rgba(91,55,24,.2);
+    border-radius:50%;background:rgba(255,255,255,.3);color:#4b301c;cursor:pointer;
+  }
+  .diary-page.handwritten .diary-text{
+    font-family:'Comic Sans MS','Segoe Print','Bradley Hand',cursive;
+  }
+  .diary-page.night-paper{
+    background:
+      radial-gradient(circle at 20% 15%,rgba(201,161,90,.08),transparent 28%),
+      linear-gradient(90deg,rgba(20,12,5,.16),transparent 5%,transparent 95%,rgba(20,12,5,.18)),
+      #e7d9bf;
+  }
+  .memory-song{
+    font-family:'Baloo 2',sans-serif;font-size:10px;color:#987550;
+    margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    max-width:330px;
+  }
+  .pin-modal{
+    position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;
+    background:rgba(8,4,2,.62);backdrop-filter:blur(8px);
+  }
+  .pin-modal.open{display:flex}
+  .pin-box{
+    width:min(320px,90vw);padding:22px;border-radius:18px;
+    background:#f4e7cf;color:#3d2818;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)
+  }
+  .pin-box h3{margin-bottom:8px}
+  .pin-input{
+    width:100%;padding:11px;border:1px solid rgba(61,40,24,.22);border-radius:10px;
+    background:rgba(255,255,255,.35);font-size:20px;text-align:center;letter-spacing:7px;outline:0;
+  }
+  .pin-actions{display:flex;gap:7px;justify-content:center;margin-top:12px}
+  .pin-actions button{
+    border:1px solid rgba(61,40,24,.2);background:rgba(255,255,255,.35);
+    color:#3d2818;border-radius:999px;padding:8px 14px;cursor:pointer;
+  }
+
+  @media(max-width:600px){
+    .memory-tools{top:10px;left:10px}
+    .memory-icon{width:32px;height:32px}
+    .diary-photo-wrap{right:28px;top:39px}
+    .diary-photo{width:72px;height:72px}
+    .diary-tools{right:28px;bottom:50px}
+    .memory-song{max-width:220px}
+  }
+
 </style>
 </head>
 <body>
+
+  <div class="memory-tools">
+    <button class="memory-icon" id="archiveBtn" title="मेरी यादें">☷</button>
+    <button class="memory-icon" id="randomMemoryBtn" title="एक पुरानी याद">❤</button>
+  </div>
+
+  <div class="memory-drawer" id="memoryDrawer">
+    <div class="memory-panel">
+      <button class="memory-close" id="archiveClose">×</button>
+      <h3>📚 मेरी यादें</h3>
+      <input class="memory-search" id="memorySearch" placeholder="यादें खोजें..." />
+      <div class="memory-count" id="memoryCount"></div>
+      <div class="memory-list" id="memoryList"></div>
+
+      <div class="memory-section">
+        <div class="memory-row">
+          <button class="memory-small-btn" id="setPinBtn">🔒 PIN सेट करें</button>
+          <button class="memory-small-btn" id="nightBtn">🌙 रात का मूड</button>
+          <button class="memory-small-btn" id="exportBtn">↓ Export</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pin-modal" id="pinModal">
+    <div class="pin-box">
+      <h3 id="pinTitle">🔒 डायरी लॉक</h3>
+      <p id="pinHint" style="font-size:11px;opacity:.7;margin-bottom:12px">अपना 4 अंकों का PIN डालें</p>
+      <input class="pin-input" id="pinInput" type="password" inputmode="numeric" maxlength="4" autocomplete="off">
+      <div class="pin-actions">
+        <button id="pinCancel">रद्द करें</button>
+        <button id="pinSubmit">खोलें</button>
+      </div>
+    </div>
+  </div>
+
 
   <button class="diary-toggle" id="diaryToggle" type="button">📖 मेरी डायरी</button>
   <div class="diary-hint">अपनी यादें लिखने के लिए डायरी खोलें</div>
@@ -633,6 +786,15 @@
           <div class="diary-label">पुरानी डायरी • मेरी यादें</div>
           <h2 class="diary-title">आज की याद</h2>
           <div class="diary-date" id="diaryDate"></div>
+          <div class="diary-meta-row">
+            <button class="diary-mood" id="diaryMood" type="button">☕ शांत</button>
+            <span class="diary-time" id="diaryTime"></span>
+          </div>
+
+          <div class="diary-photo-wrap">
+            <img class="diary-photo" id="diaryPhoto" alt="याद की तस्वीर">
+            <div class="diary-photo-label" id="diaryPhotoLabel"></div>
+          </div>
 
           <textarea
             class="diary-text"
@@ -642,8 +804,18 @@
             aria-label="अपनी याद लिखें"
           ></textarea>
 
+          <div class="diary-tools">
+            <button class="diary-tool-btn" id="photoBtn" title="तस्वीर जोड़ें">📷</button>
+            <button class="diary-tool-btn" id="handBtn" title="हस्तलिखित मोड">✎</button>
+            <button class="diary-tool-btn" id="exportPageBtn" title="इस याद को सुरक्षित करें">↓</button>
+            <input id="photoInput" type="file" accept="image/*" hidden>
+          </div>
+
           <div class="diary-footer">
-            <div class="diary-page-number" id="diaryPageNumber">पन्ना 1</div>
+            <div>
+              <div class="diary-page-number" id="diaryPageNumber">पन्ना 1</div>
+              <div class="memory-song" id="memorySong"></div>
+            </div>
             <div class="diary-actions">
               <button class="diary-btn" id="diaryPrev" type="button">‹ पिछला पन्ना</button>
               <button class="diary-btn" id="diaryNext" type="button">अगला पन्ना ›</button>
@@ -694,6 +866,8 @@
   </div>
 
 <script>
+  let currentTrackTitle='';
+
 
   /* ---------- Personal Memory Diary ---------- */
   const diaryToggle = document.getElementById('diaryToggle');
@@ -1058,7 +1232,15 @@
     });
   };
 
+  function autoShufflePlaylist(){
+    if(!ytPlayer || typeof ytPlayer.setShuffle !== 'function') return;
+    // Shuffle the entire connected YouTube playlist. No shuffle button is exposed.
+    ytPlayer.setShuffle(true);
+    if(typeof ytPlayer.setLoop === 'function') ytPlayer.setLoop(true);
+  }
+
   function onPlayerReady(){
+    autoShufflePlaylist();
     updateTrackInfo();
   }
 
@@ -1068,6 +1250,7 @@
       ppTitle.textContent = data.title;
       ppArtist.textContent = data.author || 'YouTube';
       ppThumb.src = `https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg`;
+      currentTrackTitle = data.title;
       setShayariMood(data.title);
     }
   }
@@ -1113,7 +1296,12 @@
     }
   });
 
-  ppNext.addEventListener('click', () => { if(ytPlayer) ytPlayer.nextVideo(); });
+  ppNext.addEventListener('click', () => {
+    if(ytPlayer){
+      autoShufflePlaylist();
+      ytPlayer.nextVideo();
+    }
+  });
   ppPrev.addEventListener('click', () => { if(ytPlayer) ytPlayer.previousVideo(); });
 
   ppBack10.addEventListener('click', () => {
@@ -1129,6 +1317,35 @@
     const target = duration > 0 ? Math.min(duration, current + 20) : current + 20;
     ytPlayer.seekTo(target, true);
   });
+
+  /* ===== Extra memory features ===== */
+  const memorySearch=document.getElementById('memorySearch'), memoryList=document.getElementById('memoryList'), memoryCount=document.getElementById('memoryCount'), memoryDrawer=document.getElementById('memoryDrawer');
+  const archiveBtn=document.getElementById('archiveBtn'), archiveClose=document.getElementById('archiveClose'), randomMemoryBtn=document.getElementById('randomMemoryBtn');
+  const diaryMood=document.getElementById('diaryMood'), diaryTime=document.getElementById('diaryTime'), memorySong=document.getElementById('memorySong');
+  const photoBtn=document.getElementById('photoBtn'), photoInput=document.getElementById('photoInput'), diaryPhoto=document.getElementById('diaryPhoto'), diaryPhotoLabel=document.getElementById('diaryPhotoLabel');
+  const handBtn=document.getElementById('handBtn'), exportPageBtn=document.getElementById('exportPageBtn'), nightBtn=document.getElementById('nightBtn'), exportBtn=document.getElementById('exportBtn');
+  const setPinBtn=document.getElementById('setPinBtn'), pinModal=document.getElementById('pinModal'), pinInput=document.getElementById('pinInput'), pinSubmit=document.getElementById('pinSubmit'), pinCancel=document.getElementById('pinCancel'), pinTitle=document.getElementById('pinTitle'), pinHint=document.getElementById('pinHint');
+  const MOODS=['❤️ प्यार','🥀 उदास','☕ शांत','🌧️ याद','✨ खुश']; let moodIndex=2; let pinMode='set';
+  function defaults(){return{date:diaryToday(),time:new Intl.DateTimeFormat('hi-IN',{hour:'2-digit',minute:'2-digit'}).format(new Date()),text:'',mood:'☕ शांत',photo:'',photoName:'',song:'',handwritten:false,night:false}}
+  function normalizePages(){diaryPages=diaryPages.map(p=>Object.assign(defaults(),p));diaryPersist()}
+  function renderEnhanced(){const p=diaryPages[diaryIndex]||defaults();diaryDate.textContent=p.date;diaryTime.textContent=p.time?'• '+p.time:'';diaryText.value=p.text||'';diaryPageNumber.textContent=`पन्ना ${diaryIndex+1} / ${diaryPages.length}`;diaryPrev.disabled=diaryIndex===0;diaryNext.textContent=diaryIndex===diaryPages.length-1?'नया पन्ना ›':'अगला पन्ना ›';diaryMood.textContent=p.mood||'☕ शांत';memorySong.textContent=p.song?'🎵 '+p.song:'';diaryPhoto.src=p.photo||'';diaryPhoto.classList.toggle('has-photo',!!p.photo);diaryPhotoLabel.textContent=p.photoName||'';diaryPage.classList.toggle('handwritten',!!p.handwritten);diaryPage.classList.toggle('night-paper',!!p.night);const i=MOODS.indexOf(p.mood);if(i>=0)moodIndex=i}
+  function saveEnhanced(){if(!diaryPages[diaryIndex])diaryPages[diaryIndex]=defaults();const p=diaryPages[diaryIndex];p.text=diaryText.value;p.mood=diaryMood.textContent;p.song=currentTrackTitle||p.song||'';p.handwritten=diaryPage.classList.contains('handwritten');p.night=diaryPage.classList.contains('night-paper');diaryPersist()}
+  const baseSave=diarySaveCurrent; diarySaveCurrent=function(){saveEnhanced()}; const baseRender=diaryRender; diaryRender=function(){normalizePages();renderEnhanced()};
+  function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function renderMemoryList(q=''){const query=q.trim().toLowerCase();const rows=diaryPages.map((p,i)=>({p,i})).filter(x=>!query||`${x.p.text} ${x.p.date} ${x.p.mood} ${x.p.song}`.toLowerCase().includes(query)).reverse();memoryCount.textContent=`${rows.length} याद${rows.length===1?'':'ें'}`;memoryList.innerHTML=rows.length?rows.map(x=>`<div class="memory-item" data-page="${x.i}"><strong>${esc(x.p.mood||'☕')} · ${esc(x.p.date)}</strong><span>${esc((x.p.text||'खाली पन्ना').replace(/\s+/g,' ').slice(0,95))}${x.p.song?' · 🎵 '+esc(x.p.song):''}</span></div>`).join(''):'<div class="memory-empty">अभी कोई याद नहीं मिली। डायरी में कुछ लिखो।</div>'}
+  archiveBtn.onclick=()=>{renderMemoryList(memorySearch.value);memoryDrawer.classList.add('open')}; archiveClose.onclick=()=>memoryDrawer.classList.remove('open'); memoryDrawer.onclick=e=>{if(e.target===memoryDrawer)memoryDrawer.classList.remove('open')}; memorySearch.oninput=()=>renderMemoryList(memorySearch.value);
+  memoryList.onclick=e=>{const item=e.target.closest('.memory-item');if(!item)return;diaryIndex=Number(item.dataset.page);diaryRender();memoryDrawer.classList.remove('open');diaryOpen()};
+  randomMemoryBtn.onclick=()=>{if(!diaryPages.length)return;diaryIndex=Math.floor(Math.random()*diaryPages.length);diaryRender();diaryOpen()};
+  diaryMood.onclick=()=>{moodIndex=(moodIndex+1)%MOODS.length;diaryMood.textContent=MOODS[moodIndex];saveEnhanced()};
+  photoBtn.onclick=()=>photoInput.click(); photoInput.onchange=()=>{const f=photoInput.files&&photoInput.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{diaryPages[diaryIndex].photo=r.result;diaryPages[diaryIndex].photoName=f.name.replace(/\.[^.]+$/,'').slice(0,30);saveEnhanced();renderEnhanced()};r.readAsDataURL(f)}; diaryPhoto.onclick=()=>{const p=diaryPages[diaryIndex];if(p.photo)window.open(p.photo,'_blank')};
+  handBtn.onclick=()=>{diaryPage.classList.toggle('handwritten');saveEnhanced()}; nightBtn.onclick=()=>{diaryPage.classList.toggle('night-paper');saveEnhanced()};
+  function downloadText(name,text){const a=document.createElement('a');const u=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),500)}
+  exportPageBtn.onclick=()=>{saveEnhanced();const p=diaryPages[diaryIndex];downloadText(`purani-diary-${diaryIndex+1}.txt`,`पुरानी डायरी\n\n${p.date} ${p.time||''}\n${p.mood||''}\n\n${p.text||''}\n\n${p.song?'🎵 '+p.song:''}`)};
+  exportBtn.onclick=()=>{saveEnhanced();downloadText('purani-diary-memories.txt',diaryPages.map((p,i)=>`पन्ना ${i+1} · ${p.date} ${p.time||''}\n${p.mood||''}\n${p.text||''}\n${p.song?'🎵 '+p.song:''}`).join('\n\n--------------------\n\n'))};
+  setPinBtn.onclick=()=>{pinMode='set';pinTitle.textContent='🔒 PIN सेट करें';pinHint.textContent='4 अंकों का PIN डालें';pinInput.value='';pinModal.classList.add('open');setTimeout(()=>pinInput.focus(),50)}; pinCancel.onclick=()=>pinModal.classList.remove('open');
+  pinSubmit.onclick=()=>{const pin=pinInput.value.trim();if(!/^\d{4}$/.test(pin)){alert('कृपया 4 अंकों का PIN डालें।');return}if(pinMode==='set'){localStorage.setItem('puraniDiaryPinV1',pin);pinModal.classList.remove('open');alert('PIN सेट हो गया।')}else if(pin===localStorage.getItem('puraniDiaryPinV1')){pinModal.classList.remove('open');diaryOpen()}else alert('PIN गलत है।')}; pinInput.onkeydown=e=>{if(e.key==='Enter')pinSubmit.click()};
+  normalizePages();renderEnhanced();
+
 </script>
 
 </body>
