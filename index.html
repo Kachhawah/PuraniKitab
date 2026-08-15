@@ -400,9 +400,251 @@
     .pp-artist{ font-size:10px; }
     .pp-play{ width:36px; height:36px; }
   }
+
+  /* ---------- Memory Diary ---------- */
+  .diary-toggle{
+    position:fixed;
+    top:24px;
+    right:24px;
+    z-index:30;
+    border:1px solid rgba(255,220,180,.35);
+    background:rgba(20,10,5,.62);
+    color:var(--cream);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-radius:999px;
+    padding:10px 16px;
+    font-family:'Baloo 2',sans-serif;
+    font-size:13px;
+    cursor:pointer;
+    box-shadow:0 8px 28px rgba(0,0,0,.3);
+  }
+  .diary-toggle:hover{transform:translateY(-1px);border-color:rgba(255,220,180,.6)}
+
+  .diary-overlay{
+    position:fixed;
+    inset:0;
+    z-index:40;
+    display:none;
+    align-items:center;
+    justify-content:flex-end;
+    padding:24px;
+    background:rgba(8,4,2,.22);
+  }
+  .diary-overlay.is-open{display:flex}
+
+  .diary{
+    width:min(620px,94vw);
+    height:min(760px,88vh);
+    position:relative;
+    perspective:1800px;
+    filter:drop-shadow(0 20px 50px rgba(0,0,0,.45));
+  }
+
+  .diary-book{
+    position:relative;
+    width:100%;
+    height:100%;
+    border-radius:14px 20px 20px 14px;
+  }
+
+  .diary-page{
+    position:absolute;
+    inset:0;
+    padding:52px 54px 72px;
+    background:
+      radial-gradient(circle at 20% 15%,rgba(201,161,90,.12),transparent 28%),
+      linear-gradient(90deg,rgba(70,35,12,.08),transparent 5%,transparent 95%,rgba(70,35,12,.12)),
+      #f4e7cf;
+    color:#3d2818;
+    border:1px solid rgba(91,55,24,.28);
+    border-radius:14px 20px 20px 14px;
+    box-shadow:inset 0 0 45px rgba(89,51,20,.12);
+    transform-origin:left center;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .35s ease;
+    overflow:hidden;
+  }
+  .diary-page::before{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border:1px solid rgba(115,75,38,.18);
+    border-radius:8px 14px 14px 8px;
+    pointer-events:none;
+  }
+  .diary-page{
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    touch-action:pan-y;
+    cursor:grab;
+  }
+  .diary-page:active{cursor:grabbing}
+  .diary-page.flipping-next{
+    transform:rotateY(-155deg) translateX(-3%);
+    opacity:.15;
+  }
+  .diary-page.flipping-prev{
+    transform:rotateY(155deg) translateX(3%);
+    opacity:.15;
+  }
+
+  .diary-paper-lines{
+    position:absolute;
+    inset:82px 54px 72px;
+    background:repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      rgba(105,78,47,.14) 32px
+    );
+    pointer-events:none;
+  }
+
+  .diary-close{
+    position:absolute;
+    top:16px;
+    right:18px;
+    z-index:4;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:rgba(61,40,24,.1);
+    color:#4b301c;
+    cursor:pointer;
+    font-size:22px;
+  }
+
+  .diary-label{
+    font-family:'Baloo 2',sans-serif;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:#96703c;
+    margin-bottom:8px;
+  }
+  .diary-title{
+    font-size:30px;
+    color:#402818;
+    margin-bottom:5px;
+  }
+  .diary-date{
+    font-family:'Baloo 2',sans-serif;
+    font-size:12px;
+    color:#987550;
+    margin-bottom:24px;
+  }
+  .diary-text{
+    width:100%;
+    height:calc(100% - 150px);
+    resize:none;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#3b281a;
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:17px;
+    line-height:2;
+    padding:0 6px;
+  }
+  .diary-text::placeholder{color:rgba(61,40,24,.45)}
+
+  .diary-footer{
+    position:absolute;
+    left:54px;
+    right:54px;
+    bottom:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    font-family:'Baloo 2',sans-serif;
+    color:#8b6738;
+    font-size:12px;
+  }
+  .diary-actions{display:flex;gap:7px;align-items:center}
+  .diary-btn{
+    border:1px solid rgba(91,55,24,.25);
+    background:rgba(255,255,255,.25);
+    color:#4b301c;
+    border-radius:999px;
+    padding:7px 12px;
+    font-family:'Baloo 2',sans-serif;
+    cursor:pointer;
+  }
+  .diary-btn:hover{background:rgba(255,255,255,.45)}
+  .diary-page-number{white-space:nowrap}
+
+  .diary-hint{
+    position:fixed;
+    left:24px;
+    bottom:22px;
+    z-index:20;
+    font-family:'Baloo 2',sans-serif;
+    color:rgba(245,233,216,.72);
+    font-size:11px;
+    background:rgba(20,10,5,.35);
+    padding:6px 10px;
+    border-radius:999px;
+    backdrop-filter:blur(8px);
+  }
+
+  @media (max-width:900px){
+    .diary-overlay{align-items:center;justify-content:center;padding:12px}
+    .diary{width:min(94vw,620px);height:min(82vh,760px)}
+    .diary-toggle{top:14px;right:14px}
+    .diary-hint{display:none}
+  }
+
+  @media (max-width:600px){
+    .diary-toggle{top:12px;right:12px;padding:8px 12px;font-size:12px}
+    .diary-overlay{padding:8px}
+    .diary{width:96vw;height:84svh}
+    .diary-page{padding:44px 28px 62px}
+    .diary-page::before{inset:12px}
+    .diary-paper-lines{inset:74px 28px 62px}
+    .diary-title{font-size:24px}
+    .diary-date{margin-bottom:16px}
+    .diary-text{font-size:15px;line-height:1.9;height:calc(100% - 122px)}
+    .diary-footer{left:28px;right:28px;bottom:16px}
+    .diary-btn{padding:6px 9px}
+  }
+
 </style>
 </head>
 <body>
+
+  <button class="diary-toggle" id="diaryToggle" type="button">📖 मेरी डायरी</button>
+  <div class="diary-hint">अपनी यादें लिखने के लिए डायरी खोलें</div>
+
+  <div class="diary-overlay" id="diaryOverlay" aria-hidden="true">
+    <div class="diary" id="diary">
+      <div class="diary-book">
+        <section class="diary-page" id="diaryPage">
+          <button class="diary-close" id="diaryClose" type="button" aria-label="डायरी बंद करें">×</button>
+          <div class="diary-paper-lines"></div>
+
+          <div class="diary-label">पुरानी डायरी • मेरी यादें</div>
+          <h2 class="diary-title">आज की याद</h2>
+          <div class="diary-date" id="diaryDate"></div>
+
+          <textarea
+            class="diary-text"
+            id="diaryText"
+            maxlength="3000"
+            placeholder="आज क्या हुआ...&#10;&#10;कोई ऐसी बात जो तुम हमेशा याद रखना चाहते हो, यहाँ लिखो।&#10;&#10;यह पन्ना सिर्फ तुम्हारा है ❤️"
+            aria-label="अपनी याद लिखें"
+          ></textarea>
+
+          <div class="diary-footer">
+            <div class="diary-page-number" id="diaryPageNumber">पन्ना 1</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
 
   <div class="bottom-cluster">
     <div class="shayari-wrap">
@@ -443,6 +685,168 @@
   </div>
 
 <script>
+
+  /* ---------- Personal Memory Diary ---------- */
+  const diaryToggle = document.getElementById('diaryToggle');
+  const diaryOverlay = document.getElementById('diaryOverlay');
+  const diaryClose = document.getElementById('diaryClose');
+  const diaryPage = document.getElementById('diaryPage');
+  const diaryText = document.getElementById('diaryText');
+  const diaryDate = document.getElementById('diaryDate');
+  const diaryPageNumber = document.getElementById('diaryPageNumber');
+
+  const DIARY_KEY = 'puraniDiaryMemoriesV1';
+  let diaryPages = [];
+  let diaryIndex = 0;
+  let diarySaveTimer = null;
+
+  function diaryToday(){
+    return new Intl.DateTimeFormat('hi-IN', {
+      day:'numeric', month:'long', year:'numeric'
+    }).format(new Date());
+  }
+
+  function diaryLoad(){
+    try{
+      const saved = JSON.parse(localStorage.getItem(DIARY_KEY) || '[]');
+      diaryPages = Array.isArray(saved) && saved.length ? saved : [{
+        date: diaryToday(),
+        text: ''
+      }];
+    }catch(e){
+      diaryPages = [{date: diaryToday(), text:''}];
+    }
+  }
+
+  function diaryPersist(){
+    try{
+      localStorage.setItem(DIARY_KEY, JSON.stringify(diaryPages));
+    }catch(e){}
+  }
+
+  function diaryRender(){
+    const page = diaryPages[diaryIndex] || {date:diaryToday(), text:''};
+    diaryDate.textContent = page.date;
+    diaryText.value = page.text;
+    diaryPageNumber.textContent = `पन्ना ${diaryIndex + 1} / ${diaryPages.length}`;
+    diaryPrev.disabled = diaryIndex === 0;
+  }
+
+  function diarySaveCurrent(){
+    if(!diaryPages[diaryIndex]) return;
+    diaryPages[diaryIndex].text = diaryText.value;
+    diaryPersist();
+  }
+
+  function diaryAddPage(){
+    diarySaveCurrent();
+    diaryPages.push({
+      date: diaryToday(),
+      text: ''
+    });
+    diaryIndex = diaryPages.length - 1;
+    diaryRender();
+    diaryText.focus();
+  }
+
+  function diaryTurn(direction){
+    diarySaveCurrent();
+
+    const target = diaryIndex + direction;
+    if(target < 0) return;
+
+    if(target >= diaryPages.length){
+      diaryAddPage();
+      return;
+    }
+
+    diaryPage.classList.remove('flipping-next','flipping-prev');
+    void diaryPage.offsetWidth;
+    diaryPage.classList.add(direction > 0 ? 'flipping-next' : 'flipping-prev');
+
+    setTimeout(() => {
+      diaryIndex = target;
+      diaryRender();
+      diaryPage.classList.remove('flipping-next','flipping-prev');
+    }, 360);
+  }
+
+  function diaryOpen(){
+    diaryLoad();
+    diaryRender();
+    diaryOverlay.classList.add('is-open');
+    diaryOverlay.setAttribute('aria-hidden','false');
+    setTimeout(() => diaryText.focus(), 120);
+  }
+
+  function diaryClosePanel(){
+    diarySaveCurrent();
+    diaryOverlay.classList.remove('is-open');
+    diaryOverlay.setAttribute('aria-hidden','true');
+  }
+
+  diaryToggle.addEventListener('click', diaryOpen);
+  diaryClose.addEventListener('click', diaryClosePanel);
+  // Real-book style page turning: swipe left/right on the diary.
+  let diarySwipeStartX = null;
+  let diarySwipeStartY = null;
+  let diarySwipeActive = false;
+
+  function diarySwipeStart(e){
+    if(e.target.closest('textarea, button')) return;
+    const point = e.touches ? e.touches[0] : e;
+    diarySwipeStartX = point.clientX;
+    diarySwipeStartY = point.clientY;
+    diarySwipeActive = true;
+  }
+
+  function diarySwipeEnd(e){
+    if(!diarySwipeActive || diarySwipeStartX === null) return;
+    const point = e.changedTouches ? e.changedTouches[0] : e;
+    const dx = point.clientX - diarySwipeStartX;
+    const dy = point.clientY - diarySwipeStartY;
+
+    diarySwipeStartX = null;
+    diarySwipeStartY = null;
+    diarySwipeActive = false;
+
+    // Ignore mostly vertical gestures.
+    if(Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+
+    if(dx < 0){
+      // Swipe left = next page
+      diaryTurn(1);
+    }else{
+      // Swipe right = previous page
+      diaryTurn(-1);
+    }
+  }
+
+  diaryPage.style.touchAction = 'pan-y';
+  diaryPage.addEventListener('touchstart', diarySwipeStart, {passive:true});
+  diaryPage.addEventListener('touchend', diarySwipeEnd, {passive:true});
+
+  // Desktop trackpads/mice can also drag horizontally like a real page.
+  diaryPage.addEventListener('pointerdown', diarySwipeStart);
+  diaryPage.addEventListener('pointerup', diarySwipeEnd);
+
+  diaryText.addEventListener('input', () => {
+    clearTimeout(diarySaveTimer);
+    diarySaveTimer = setTimeout(diarySaveCurrent, 250);
+  });
+
+  diaryOverlay.addEventListener('click', (e) => {
+    if(e.target === diaryOverlay) diaryClosePanel();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(!diaryOverlay.classList.contains('is-open')) return;
+    if(e.key === 'Escape') diaryClosePanel();
+
+  });
+
+  diaryLoad();
+
   const loveShayari = [
     "तेरी मुस्कान में आज भी मेरा सबसे खूबसूरत मौसम रहता है।",
     "तू पास हो तो चाय भी मोहब्बत जैसी लगती है।",
