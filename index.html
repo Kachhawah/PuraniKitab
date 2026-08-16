@@ -32,7 +32,7 @@
         rgba(10,6,3,0.0) 35%,
         rgba(10,6,3,0.05) 65%,
         rgba(10,6,3,0.28) 100%),
-      url('background-desktop.png');
+      var(--desktop-bg, url('background-desktop.png'));
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
@@ -265,7 +265,7 @@
           rgba(10,6,3,0.0) 35%,
           rgba(10,6,3,0.05) 65%,
           rgba(10,6,3,0.28) 100%),
-        url('background.png');
+        var(--mobile-bg, url('background.png'));
       background-size:cover;
       background-position:center 18%;
       padding-bottom:env(safe-area-inset-bottom);
@@ -1407,6 +1407,233 @@
     }
   }
 
+
+  /* ===== Custom station settings ===== */
+  .station-settings-overlay{
+    position:fixed;
+    inset:0;
+    z-index:1200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(8,4,2,.62);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .station-settings-overlay.open{display:flex}
+  .station-settings{
+    position:relative;
+    width:min(520px,94vw);
+    max-height:min(82vh,720px);
+    overflow:auto;
+    padding:28px;
+    border:1px solid rgba(201,161,90,.35);
+    border-radius:22px;
+    background:rgba(244,231,207,.97);
+    color:#3d2818;
+    box-shadow:0 24px 80px rgba(0,0,0,.45);
+    font-family:'Baloo 2',sans-serif;
+  }
+  .station-settings-close{
+    position:absolute;
+    top:12px;right:14px;
+    width:36px;height:36px;
+    border:0;border-radius:50%;
+    background:rgba(61,40,24,.08);
+    color:#4b301c;
+    font-size:24px;
+    cursor:pointer;
+  }
+  .station-settings-kicker{
+    color:#9a7541;
+    font-size:11px;
+    letter-spacing:1px;
+    margin-bottom:3px;
+  }
+  .station-settings h3{
+    font-size:25px;
+    margin-bottom:5px;
+  }
+  .station-settings-note{
+    font-size:11px;
+    color:#795b38;
+    opacity:.8;
+    line-height:1.55;
+    margin-bottom:18px;
+  }
+  .station-settings-section{
+    padding:15px 0;
+    border-top:1px solid rgba(91,55,24,.14);
+  }
+  .station-settings-section label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .station-settings-input{
+    width:100%;
+    border:1px solid rgba(91,55,24,.22);
+    border-radius:12px;
+    padding:11px 12px;
+    background:rgba(255,255,255,.6);
+    color:#3d2818;
+    outline:0;
+    font:500 12px 'Baloo 2',sans-serif;
+  }
+  .station-settings-input:focus{
+    border-color:#c9a15a;
+    box-shadow:0 0 0 3px rgba(201,161,90,.12);
+  }
+  .station-settings-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .station-settings-btn{
+    border:1px solid rgba(91,55,24,.2);
+    border-radius:999px;
+    padding:8px 13px;
+    background:rgba(255,255,255,.55);
+    color:#4b301c;
+    cursor:pointer;
+    font:700 11px 'Baloo 2',sans-serif;
+  }
+  .station-settings-btn.primary{
+    background:#c9a15a;
+    border-color:#c9a15a;
+  }
+  .station-settings-btn:hover{filter:brightness(1.04)}
+  .station-settings-file-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+  .station-file-btn{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    min-height:62px;
+    padding:10px;
+    text-align:center;
+    border:1px dashed rgba(91,55,24,.25);
+    border-radius:13px;
+    background:rgba(255,255,255,.42);
+    cursor:pointer;
+    font-size:11px !important;
+  }
+  .station-file-btn input{display:none}
+  .station-settings-status{
+    min-height:16px;
+    margin-top:7px;
+    color:#8b6738;
+    font-size:10px;
+  }
+  .station-settings-foot{
+    padding-top:12px;
+    color:#8b6738;
+    font-size:10px;
+    opacity:.75;
+  }
+
+  /* ===== Keep right-side UI away from the diary toggle ===== */
+  .station-right{
+    position:fixed !important;
+    top:78px !important;
+    right:24px !important;
+    left:auto !important;
+    margin:0 !important;
+    z-index:40 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-end !important;
+    gap:10px !important;
+  }
+  .support-box{
+    position:relative !important;
+    top:auto !important;
+    right:auto !important;
+    width:238px !important;
+  }
+  .station-memory{
+    top:220px !important;
+    right:24px !important;
+    z-index:39 !important;
+  }
+  @media(max-width:800px){
+    .station-right{
+      top:62px !important;
+      right:10px !important;
+    }
+    .support-box{width:190px !important}
+    .station-memory{
+      top:172px !important;
+      right:10px !important;
+      max-width:210px;
+    }
+    .station-settings{
+      padding:22px 18px;
+      border-radius:18px;
+    }
+    .station-file-btn{min-height:56px}
+  }
+  @media(max-width:480px){
+    .station-settings-file-row{grid-template-columns:1fr}
+  }
+
+
+  /* Removed old-school memories CTA from the landing UI */
+  .station-memory{display:none !important;}
+
+
+  /* ===== Readable clock/date ===== */
+  .station-left{
+    isolation:isolate;
+  }
+  .station-clock{
+    color:#fff !important;
+    font-weight:800 !important;
+    text-shadow:
+      0 2px 4px rgba(0,0,0,.95),
+      0 0 10px rgba(0,0,0,.72) !important;
+    background:rgba(35,24,14,.42);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:12px;
+    padding:5px 10px 4px;
+    width:max-content;
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+  }
+  .station-date{
+    color:#fff !important;
+    font-weight:700 !important;
+    text-shadow:0 2px 4px rgba(0,0,0,.95) !important;
+    background:rgba(35,24,14,.34);
+    border-radius:8px;
+    padding:3px 8px;
+    width:max-content;
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+  }
+  .onboard{
+    box-shadow:0 5px 18px rgba(0,0,0,.28);
+  }
+  .creator-chip{
+    box-shadow:0 5px 18px rgba(0,0,0,.22);
+  }
+
+  @media(max-width:800px){
+    .station-clock{
+      padding:4px 8px 3px;
+      border-radius:10px;
+    }
+    .station-date{
+      padding:2px 6px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -1437,10 +1664,6 @@
       </div>
     </div>
   </header>
-
-  <button class="station-memory" id="stationMemory" type="button">
-    Click here to enjoy your old school memories
-  </button>
 <audio id="chaiSipAudio" preload="auto" src="chai-sip.m4a"></audio>
   <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
        aria-label="चाय की चुस्की">
@@ -1521,9 +1744,52 @@
           <button class="memory-small-btn" id="extraMenuInline">✦ और features</button>
           <button class="memory-small-btn" id="setPinBtn">🔒 PIN सेट करें</button>
           <button class="memory-small-btn" id="nightBtn">🌙 रात का मूड</button>
+          <button class="memory-small-btn" id="stationSettingsBtn">⚙️ स्टेशन सेटिंग्स</button>
           <button class="memory-small-btn" id="exportBtn">↓ Export</button>
         </div>
       </div>
+    </div>
+  </div>
+
+
+  <div class="station-settings-overlay" id="stationSettingsOverlay">
+    <div class="station-settings">
+      <button class="station-settings-close" id="stationSettingsClose" type="button">×</button>
+      <div class="station-settings-kicker">पुरानी किताब · Settings</div>
+      <h3>⚙️ अपनी स्टेशन सेटिंग्स</h3>
+      <p class="station-settings-note">ये settings इसी browser में save होंगी। हर visitor अपनी playlist और background अलग रख सकता है.</p>
+
+      <section class="station-settings-section">
+        <label for="customPlaylistInput">🎵 YouTube Playlist</label>
+        <input id="customPlaylistInput" class="station-settings-input"
+               placeholder="https://www.youtube.com/playlist?list=..."
+               autocomplete="off">
+        <div class="station-settings-actions">
+          <button class="station-settings-btn primary" id="applyPlaylistBtn" type="button">Playlist लगाएँ</button>
+          <button class="station-settings-btn" id="resetPlaylistBtn" type="button">Default</button>
+        </div>
+        <div class="station-settings-status" id="playlistSettingsStatus"></div>
+      </section>
+
+      <section class="station-settings-section">
+        <label>🖼️ Background बदलें</label>
+        <div class="station-settings-file-row">
+          <label class="station-file-btn">
+            Desktop background
+            <input id="desktopBgInput" type="file" accept="image/*">
+          </label>
+          <label class="station-file-btn">
+            Mobile background
+            <input id="mobileBgInput" type="file" accept="image/*">
+          </label>
+        </div>
+        <div class="station-settings-actions">
+          <button class="station-settings-btn" id="resetBackgroundBtn" type="button">Default backgrounds</button>
+        </div>
+        <div class="station-settings-status" id="backgroundSettingsStatus"></div>
+      </section>
+
+      <div class="station-settings-foot">💾 Changes automatically save in this browser.</div>
     </div>
   </div>
 
@@ -2110,6 +2376,200 @@
   setPinBtn.onclick=()=>{pinMode='set';pinTitle.textContent='🔒 PIN सेट करें';pinHint.textContent='4 अंकों का PIN डालें';pinInput.value='';pinModal.classList.add('open');setTimeout(()=>pinInput.focus(),50)}; pinCancel.onclick=()=>pinModal.classList.remove('open');
   pinSubmit.onclick=()=>{const pin=pinInput.value.trim();if(!/^\d{4}$/.test(pin)){alert('कृपया 4 अंकों का PIN डालें।');return}if(pinMode==='set'){localStorage.setItem('puraniDiaryPinV1',pin);pinModal.classList.remove('open');alert('PIN सेट हो गया।')}else if(pin===localStorage.getItem('puraniDiaryPinV1')){pinModal.classList.remove('open');diaryOpen()}else alert('PIN गलत है।')}; pinInput.onkeydown=e=>{if(e.key==='Enter')pinSubmit.click()};
   normalizePages();renderEnhanced();
+
+
+  /* ===== Visitor-customizable playlist + backgrounds ===== */
+  (function(){
+    const settingsBtn = document.getElementById('stationSettingsBtn');
+    const settingsOverlay = document.getElementById('stationSettingsOverlay');
+    const settingsClose = document.getElementById('stationSettingsClose');
+    const playlistInput = document.getElementById('customPlaylistInput');
+    const applyPlaylistBtn = document.getElementById('applyPlaylistBtn');
+    const resetPlaylistBtn = document.getElementById('resetPlaylistBtn');
+    const playlistStatus = document.getElementById('playlistSettingsStatus');
+    const desktopBgInput = document.getElementById('desktopBgInput');
+    const mobileBgInput = document.getElementById('mobileBgInput');
+    const resetBackgroundBtn = document.getElementById('resetBackgroundBtn');
+    const bgStatus = document.getElementById('backgroundSettingsStatus');
+
+    const DEFAULT_PLAYLIST_ID = "PLq-bT4s33RYADNkcClDkLPovaKJx0HTDM";
+    const DEFAULT_FIRST_VIDEO_ID = "mZwJs1YQ-Wk";
+
+    function openSettings(){
+      if(!settingsOverlay) return;
+      playlistInput.value = localStorage.getItem('puraniKitabPlaylistId') || '';
+      settingsOverlay.classList.add('open');
+    }
+    function closeSettings(){
+      settingsOverlay && settingsOverlay.classList.remove('open');
+    }
+    settingsBtn && (settingsBtn.onclick = openSettings);
+    settingsClose && (settingsClose.onclick = closeSettings);
+    settingsOverlay && settingsOverlay.addEventListener('click', e=>{
+      if(e.target === settingsOverlay) closeSettings();
+    });
+
+    function extractPlaylistId(value){
+      const v = String(value || '').trim();
+      if(!v) return '';
+      if(/^[A-Za-z0-9_-]{10,}$/.test(v)) return v;
+      try{
+        const u = new URL(v);
+        const id = u.searchParams.get('list');
+        return id ? id.trim() : '';
+      }catch(e){
+        const m = v.match(/[?&]list=([A-Za-z0-9_-]+)/);
+        return m ? m[1] : '';
+      }
+    }
+
+    function showStatus(el, msg, good=true){
+      if(!el) return;
+      el.textContent = msg;
+      el.style.color = good ? '#8b6738' : '#a43d2b';
+      clearTimeout(el._timer);
+      el._timer = setTimeout(()=>{el.textContent=''}, 3500);
+    }
+
+    function rebuildPlayer(playlistId, firstVideoId=''){
+      if(typeof YT === 'undefined' || !YT.Player){
+        showStatus(playlistStatus, 'YouTube अभी load नहीं हुआ, 2-3 सेकंड बाद फिर लगाएँ।', false);
+        return false;
+      }
+      try{
+        if(progressTimer){ clearInterval(progressTimer); progressTimer = null; }
+        if(ytPlayer && typeof ytPlayer.destroy === 'function'){
+          ytPlayer.destroy();
+        }
+      }catch(e){}
+      ytPlayer = null;
+
+      const options = {
+        height:'1',
+        width:'1',
+        playerVars:{
+          listType:'playlist',
+          list:playlistId,
+          autoplay:0,
+          controls:0
+        },
+        events:{
+          onReady:onPlayerReady,
+          onStateChange:onPlayerStateChange
+        }
+      };
+      if(firstVideoId) options.videoId = firstVideoId;
+      ytPlayer = new YT.Player('ytHidden', options);
+      return true;
+    }
+
+    applyPlaylistBtn && (applyPlaylistBtn.onclick = ()=>{
+      const id = extractPlaylistId(playlistInput.value);
+      if(!id){
+        showStatus(playlistStatus, 'Valid YouTube playlist link या playlist ID डालें।', false);
+        return;
+      }
+      localStorage.setItem('puraniKitabPlaylistId', id);
+      const ok = rebuildPlayer(id);
+      if(ok){
+        showStatus(playlistStatus, 'Playlist बदल दी गई।');
+        setTimeout(closeSettings, 650);
+      }
+    });
+
+    resetPlaylistBtn && (resetPlaylistBtn.onclick = ()=>{
+      localStorage.removeItem('puraniKitabPlaylistId');
+      playlistInput.value = '';
+      rebuildPlayer(DEFAULT_PLAYLIST_ID, DEFAULT_FIRST_VIDEO_ID);
+      showStatus(playlistStatus, 'Default playlist वापस आ गई।');
+    });
+
+    function applySavedBackgrounds(){
+      const desktop = localStorage.getItem('puraniKitabDesktopBg');
+      const mobile = localStorage.getItem('puraniKitabMobileBg');
+      if(desktop) document.documentElement.style.setProperty('--desktop-bg', `url("${desktop}")`);
+      if(mobile) document.documentElement.style.setProperty('--mobile-bg', `url("${mobile}")`);
+    }
+
+    function imageToDataURL(file, maxSide=1800){
+      return new Promise((resolve,reject)=>{
+        if(!file || !file.type.startsWith('image/')) return reject(new Error('not-image'));
+        const reader = new FileReader();
+        reader.onerror = ()=>reject(reader.error || new Error('read-error'));
+        reader.onload = ()=>{
+          const img = new Image();
+          img.onload = ()=>{
+            const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+            const w = Math.max(1, Math.round(img.naturalWidth * scale));
+            const h = Math.max(1, Math.round(img.naturalHeight * scale));
+            const canvas = document.createElement('canvas');
+            canvas.width=w; canvas.height=h;
+            const ctx=canvas.getContext('2d');
+            ctx.drawImage(img,0,0,w,h);
+            resolve(canvas.toDataURL('image/jpeg',0.78));
+          };
+          img.onerror=()=>reject(new Error('decode-error'));
+          img.src=reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function saveBg(file, key, cssVar, label){
+      try{
+        const data = await imageToDataURL(file);
+        localStorage.setItem(key, data);
+        document.documentElement.style.setProperty(cssVar, `url("${data}")`);
+        showStatus(bgStatus, `${label} background save हो गया।`);
+      }catch(e){
+        showStatus(bgStatus, 'Image save नहीं हो पाई। छोटी image try करें।', false);
+      }
+    }
+
+    desktopBgInput && (desktopBgInput.onchange = ()=>{
+      const f=desktopBgInput.files && desktopBgInput.files[0];
+      if(f) saveBg(f,'puraniKitabDesktopBg','--desktop-bg','Desktop');
+    });
+    mobileBgInput && (mobileBgInput.onchange = ()=>{
+      const f=mobileBgInput.files && mobileBgInput.files[0];
+      if(f) saveBg(f,'puraniKitabMobileBg','--mobile-bg','Mobile');
+    });
+
+    resetBackgroundBtn && (resetBackgroundBtn.onclick = ()=>{
+      localStorage.removeItem('puraniKitabDesktopBg');
+      localStorage.removeItem('puraniKitabMobileBg');
+      document.documentElement.style.removeProperty('--desktop-bg');
+      document.documentElement.style.removeProperty('--mobile-bg');
+      showStatus(bgStatus, 'Default backgrounds वापस आ गए।');
+    });
+
+    applySavedBackgrounds();
+
+    /* Override the initial YouTube API creation to use the visitor's saved playlist. */
+    const originalReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function(){
+      const saved = localStorage.getItem('puraniKitabPlaylistId') || DEFAULT_PLAYLIST_ID;
+      if(saved !== DEFAULT_PLAYLIST_ID){
+        rebuildPlayer(saved);
+      }else if(typeof originalReady === 'function'){
+        originalReady();
+      }
+    };
+  })();
+
+
+  /* Simulated listener display: minimum 1000, updates every second. */
+  (function(){
+    const el = document.getElementById('onboardCount');
+    if(!el) return;
+    let count = Math.max(1000, parseInt(el.textContent.replace(/\D/g,''),10) || 1000);
+    function tick(){
+      count = Math.max(1000, count + Math.floor(Math.random()*21)-10);
+      el.textContent = count.toLocaleString('en-IN');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 
   /* ===== Interactive Chai ===== */
   const chaiCorner = document.getElementById('chaiCorner');
