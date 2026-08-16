@@ -1653,6 +1653,154 @@
 @media(max-width:800px){.station-clock-btn{padding:7px 10px!important}.station-clock{font-size:18px!important}.station-date{font-size:7.5px!important}.station-ui-btn{font-size:10px!important;padding:6px 10px!important}.support-box{width:190px!important}.qr-overlay{right:12px!important;top:140px!important;width:210px!important}.qr-modal{width:210px!important;padding:11px!important}.qr-image{width:165px!important}}
 
 </style>
+
+<style id="aesthetic-overrides">
+/* ===== Aesthetic cinematic color pass ===== */
+:root{
+  --cream:#fff4df;
+  --gold:#e2b866;
+  --aesthetic-ink:rgba(19,12,8,.58);
+  --aesthetic-border:rgba(255,224,169,.28);
+}
+
+/* Keep the photo bright, but give it a softer warm-film grade. */
+body{
+  background-image:
+    linear-gradient(180deg,
+      rgba(18,10,5,.08) 0%,
+      rgba(24,13,7,.015) 34%,
+      rgba(17,9,5,.08) 68%,
+      rgba(10,6,3,.34) 100%),
+    radial-gradient(circle at 50% 8%, rgba(255,222,158,.10), transparent 42%),
+    var(--desktop-bg, url('background-desktop.png')) !important;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+/* Warm smoked-glass controls instead of flat grey pills. */
+.station-clock-btn,
+.station-ui-btn,
+.support-box{
+  background:linear-gradient(135deg,
+    rgba(37,24,14,.66),
+    rgba(15,11,8,.46)) !important;
+  border:1px solid rgba(255,225,175,.30) !important;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -1px 0 rgba(0,0,0,.16) !important;
+  backdrop-filter:blur(14px) saturate(125%);
+  -webkit-backdrop-filter:blur(14px) saturate(125%);
+}
+
+.station-clock{
+  color:#fff7e8 !important;
+  text-shadow:0 2px 14px rgba(0,0,0,.62) !important;
+}
+
+.station-date{
+  color:rgba(255,239,215,.86) !important;
+}
+
+.station-ui-btn{
+  color:#fff3dc !important;
+}
+
+.creator-chip{
+  color:rgba(255,242,220,.92) !important;
+}
+
+.support-box{
+  color:#fff4df !important;
+}
+
+.support-box:hover,
+.station-ui-btn:hover,
+.station-clock-btn:hover{
+  border-color:rgba(255,225,175,.42) !important;
+  background:linear-gradient(135deg,
+    rgba(50,31,17,.70),
+    rgba(18,12,8,.52)) !important;
+}
+
+/* Make the floating chai blend naturally with the scene. */
+.chai-corner{
+  filter:drop-shadow(0 14px 22px rgba(31,16,5,.26)) !important;
+}
+.chai-glass{
+  filter:
+    drop-shadow(0 8px 10px rgba(0,0,0,.25))
+    saturate(.94)
+    contrast(1.02) !important;
+  mix-blend-mode:multiply;
+}
+
+/* Softer, more premium bottom player. */
+.player-pill{
+  background:linear-gradient(135deg,
+    rgba(29,18,10,.74),
+    rgba(10,8,6,.58)) !important;
+  border-color:rgba(255,225,175,.28) !important;
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.09) !important;
+  backdrop-filter:blur(16px) saturate(120%);
+  -webkit-backdrop-filter:blur(16px) saturate(120%);
+}
+
+.pp-title{color:#fff4df !important;}
+.pp-artist{color:rgba(255,236,208,.62) !important;}
+.pp-progress{background:rgba(255,245,225,.16) !important;}
+.pp-progress-fill{background:linear-gradient(90deg,#c9974b,#f0c878) !important;}
+
+.pp-play{
+  background:#fff1d7 !important;
+  color:#24170b !important;
+  box-shadow:0 5px 18px rgba(0,0,0,.20) !important;
+}
+
+.shayari{
+  text-shadow:0 2px 14px rgba(0,0,0,.78) !important;
+}
+
+/* More elegant hamburger and diary button treatment. */
+.memory-icon,
+.diary-toggle{
+  background:linear-gradient(135deg,
+    rgba(38,24,14,.68),
+    rgba(15,10,7,.48)) !important;
+  border-color:rgba(255,225,175,.28) !important;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.09) !important;
+  backdrop-filter:blur(14px) saturate(120%);
+  -webkit-backdrop-filter:blur(14px) saturate(120%);
+}
+
+/* Mobile uses the portrait background, with the same warm grade. */
+@media(max-width:600px){
+  body{
+    background-image:
+      linear-gradient(180deg,
+        rgba(18,10,5,.06) 0%,
+        rgba(18,10,5,.02) 35%,
+        rgba(12,7,4,.10) 62%,
+        rgba(8,5,3,.76) 100%),
+      radial-gradient(circle at 50% 10%, rgba(255,220,160,.08), transparent 42%),
+      var(--mobile-bg, url('background.png')) !important;
+    background-size:cover;
+    background-position:center 18%;
+  }
+
+  .player-pill{
+    background:linear-gradient(135deg,
+      rgba(25,16,10,.82),
+      rgba(9,7,5,.70)) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
