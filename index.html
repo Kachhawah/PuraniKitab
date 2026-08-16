@@ -1244,6 +1244,74 @@
     .station-memory{right:10px;top:170px}
   }
 
+
+  /* Final left-side collision fix */
+  .station-top{
+    inset:22px 24px auto 24px;
+    pointer-events:none;
+  }
+  .station-left{
+    margin-left:72px;
+    gap:7px;
+    min-width:180px;
+    max-width:240px;
+    pointer-events:auto;
+  }
+  .station-clock{
+    font-size:22px;
+    line-height:1.05;
+    white-space:nowrap;
+  }
+  .station-date{
+    white-space:nowrap;
+    font-size:10px;
+    line-height:1.15;
+  }
+  .onboard{
+    align-self:flex-start;
+    white-space:nowrap;
+    margin-top:2px;
+  }
+  .creator-chip{
+    align-self:flex-start;
+    white-space:nowrap;
+    margin-top:1px;
+  }
+
+  /* Keep right-side controls away from the diary button */
+  .station-right{
+    margin-top:42px;
+    margin-right:18px;
+    align-items:flex-end;
+  }
+  .station-memory{
+    right:24px;
+    top:205px;
+  }
+
+  @media(max-width:800px){
+    .station-top{
+      inset:10px 10px auto 10px;
+    }
+    .station-left{
+      margin-left:54px;
+      min-width:150px;
+      max-width:190px;
+    }
+    .station-clock{font-size:18px}
+    .station-date{font-size:8px;letter-spacing:1px}
+    .onboard{font-size:11px;padding:5px 9px}
+    .creator-chip{font-size:9px;padding:5px 8px}
+    .station-right{
+      margin-top:38px;
+      margin-right:4px;
+    }
+    .station-memory{
+      right:10px;
+      top:165px;
+    }
+  }
+
 </style>
 </head>
 <body>
