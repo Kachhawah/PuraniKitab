@@ -1635,33 +1635,49 @@
   }
 
 \n  /* ===== Final clean top layout ===== */\n  .station-top{\n    position:fixed !important;\n    inset:0 !important;\n    width:100% !important;\n    pointer-events:none !important;\n    z-index:80 !important;\n  }\n  /* Everything on the left sits directly below the hamburger. */\n  .station-left{\n    position:fixed !important;\n    left:24px !important;\n    top:86px !important;\n    margin:0 !important;\n    gap:7px !important;\n    pointer-events:auto !important;\n    align-items:flex-start !important;\n  }\n  /* Only the diary stays at the top-right. The coffee/support card sits immediately below it. */\n  .station-right{\n    position:fixed !important;\n    right:24px !important;\n    top:82px !important;\n    margin:0 !important;\n    padding:0 !important;\n    pointer-events:auto !important;\n    align-items:flex-end !important;\n  }\n  .support-box{\n    width:238px !important;\n  }\n  .station-memory{display:none !important;}\n  .qr-overlay{\n    position:fixed; inset:0; z-index:300; display:none; place-items:center;\n    background:rgba(10,6,3,.68); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);\n    padding:20px;\n  }\n  .qr-overlay.is-open{display:grid;}\n  .qr-modal{\n    position:relative; width:min(340px,90vw); padding:24px 22px 20px; text-align:center;\n    background:#f4e7cf; color:#3d2818; border:1px solid rgba(91,55,24,.22);\n    border-radius:20px; box-shadow:0 24px 70px rgba(0,0,0,.45);\n  }\n  .qr-close{\n    position:absolute; top:8px; right:10px; width:34px; height:34px; border:0;\n    border-radius:50%; background:rgba(61,40,24,.1); color:#3d2818; font-size:24px; cursor:pointer;\n  }\n  .qr-title{font:700 20px 'Baloo 2',sans-serif;}\n  .qr-sub{font:500 12px 'Baloo 2',sans-serif; opacity:.72; margin:3px 0 14px;}\n  .qr-image{display:block; width:min(280px,78vw); aspect-ratio:1; object-fit:contain; margin:0 auto; border-radius:12px; background:#fff;}\n  .qr-note{font:500 11px 'Baloo 2',sans-serif; opacity:.65; margin-top:10px;}\n  @media(max-width:800px){\n    .station-left{left:12px !important; top:70px !important;}\n    .station-right{right:12px !important; top:68px !important;}\n    .support-box{width:190px !important;}\n  }\n
+
+/* FINAL COMPACT TOP BUTTON UI */
+.station-left{gap:7px !important;}
+.station-clock-btn,.station-ui-btn,.support-box{appearance:none;-webkit-appearance:none;border:1px solid rgba(255,220,180,.22)!important;background:rgba(24,13,7,.52)!important;color:var(--cream)!important;border-radius:999px!important;box-shadow:0 7px 20px rgba(0,0,0,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.station-clock-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:max-content;padding:8px 13px!important;cursor:default;text-align:left;}
+.station-clock{font-size:22px!important;line-height:1!important;color:#fff!important;}
+.station-date{font-size:9px!important;letter-spacing:1.4px!important;color:rgba(255,244,229,.88)!important;}
+.station-ui-btn{display:inline-flex!important;align-items:center;width:max-content;padding:7px 12px!important;font:600 12px 'Baloo 2',sans-serif!important;text-decoration:none!important;cursor:default;}
+.creator-chip{cursor:pointer!important;}
+.support-box{width:238px!important;padding:9px 14px!important;display:flex!important;flex-direction:column;align-items:center;gap:1px;cursor:pointer;text-align:center;}
+.support-title{font-size:12px!important;font-weight:700!important;}.support-sub{font-size:9px!important;opacity:.72!important;}.support-actions{display:none!important;}
+.qr-overlay{position:fixed!important;inset:auto 24px auto auto!important;top:166px!important;width:250px!important;padding:0!important;display:none!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none!important;}
+.qr-overlay.is-open{display:block!important;}
+.qr-modal{width:250px!important;box-sizing:border-box;padding:14px 13px 12px!important;border-radius:16px!important;box-shadow:0 16px 42px rgba(0,0,0,.34)!important;pointer-events:auto!important;}
+.qr-close{width:28px!important;height:28px!important;font-size:19px!important;top:6px!important;right:7px!important;}.qr-title{font-size:15px!important;padding-right:20px;}.qr-sub{font-size:10px!important;margin:2px 0 8px!important;}.qr-image{width:190px!important;max-width:100%;border-radius:8px!important;}.qr-note{font-size:9px!important;margin-top:6px!important;}
+@media(max-width:800px){.station-clock-btn{padding:7px 10px!important}.station-clock{font-size:18px!important}.station-date{font-size:7.5px!important}.station-ui-btn{font-size:10px!important;padding:6px 10px!important}.support-box{width:190px!important}.qr-overlay{right:12px!important;top:140px!important;width:210px!important}.qr-modal{width:210px!important;padding:11px!important}.qr-image{width:165px!important}}
+
 </style>
 </head>
 <body>
 
   <header class="station-top" aria-label="Purani Kitab station">
     <div class="station-left">
-      <div class="station-clock" id="stationClock">--:--</div>
-      <div class="station-date" id="stationDate">--</div>
-      <div class="onboard">
+      <button class="station-clock-btn" id="stationClockBtn" type="button" aria-label="Current time">
+        <span class="station-clock" id="stationClock">--:--</span>
+        <span class="station-date" id="stationDate">--</span>
+      </button>
+      <button class="onboard station-ui-btn" type="button" aria-label="Listeners online">
         <span class="onboard-dot"></span>
         <strong id="onboardCount">100</strong>
         <span>listening</span>
-      </div>
-      <a class="creator-chip" href="https://www.instagram.com/ekaurduniya/" target="_blank" rel="noopener noreferrer">
+      </button>
+      <a class="creator-chip station-ui-btn" href="https://www.instagram.com/ekaurduniya/" target="_blank" rel="noopener noreferrer">
         <span class="instagram-dot">◎</span>
         build by @ekaurduniya
       </a>
     </div>
 
     <div class="station-right">
-      <div class="support-box">
-        <div class="support-title">☕ Buy me a coffee</div>
-        <div class="support-sub">A small support means a lot.</div>
-        <div class="support-actions">
-          <button class="support-action" id="kofiBtn" type="button">📱 PhonePe</button>
-        </div>
-      </div>
+      <button class="support-box" id="kofiBtn" type="button" aria-expanded="false">
+        <span class="support-title">☕ Buy me a coffee</span>
+        <span class="support-sub">PhonePe से support करें</span>
+      </button>
     </div>
   </header>
 <div class="qr-overlay" id="qrOverlay" aria-hidden="true">
@@ -2827,15 +2843,24 @@ if(memoryBtn){
   }
   if(kofiBtn){
     kofiBtn.addEventListener('click', () => {
-      if(qrOverlay) qrOverlay.classList.add('is-open');
+      if(qrOverlay){
+        const open = qrOverlay.classList.toggle('is-open');
+        kofiBtn.setAttribute('aria-expanded', String(open));
+      }
     });
   }
   if(qrClose){
-    qrClose.addEventListener('click', () => qrOverlay && qrOverlay.classList.remove('is-open'));
+    qrClose.addEventListener('click', () => {
+      if(qrOverlay) qrOverlay.classList.remove('is-open');
+      if(kofiBtn) kofiBtn.setAttribute('aria-expanded','false');
+    });
   }
   if(qrOverlay){
     qrOverlay.addEventListener('click', (e) => {
-      if(e.target === qrOverlay) qrOverlay.classList.remove('is-open');
+      if(e.target === qrOverlay){
+        qrOverlay.classList.remove('is-open');
+        if(kofiBtn) kofiBtn.setAttribute('aria-expanded','false');
+      }
     });
   }
   document.addEventListener('keydown', (e) => {
