@@ -1076,9 +1076,99 @@
     -webkit-user-drag:none !important;
     user-select:none !important;
   }
+
+  /* ===== Old-school station chrome ===== */
+  .station-top-left,.station-top-right{position:fixed;z-index:25;pointer-events:none}
+  .station-top-left{left:34px;top:40px;color:#f7ead6;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+  .station-clock{font-family:'Baloo 2',sans-serif;font-size:27px;font-weight:600;line-height:1}
+  .station-date{margin-top:7px;font-family:'Baloo 2',sans-serif;font-size:11px;letter-spacing:2px;opacity:.78;font-weight:600}
+  .listener-row{display:flex;align-items:center;gap:10px;margin-top:17px;font-family:'Baloo 2',sans-serif;font-size:15px;letter-spacing:.2px}
+  .listener-dot{width:10px;height:10px;border-radius:50%;background:#18d67a;box-shadow:0 0 12px rgba(24,214,122,.55);flex:0 0 auto}
+  .listener-number{font-weight:700}
+  .listener-label{opacity:.72}
+  .creator-chip{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:7px 11px;border-radius:999px;background:rgba(22,13,10,.55);border:1px solid rgba(255,233,210,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:auto;color:#f7ead6;text-decoration:none;font-family:'Baloo 2',sans-serif;font-size:11px}
+  .creator-chip svg{width:14px;height:14px;fill:currentColor}
+  .station-top-right{right:34px;top:38px;width:min(430px,calc(100vw - 68px));display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+  .station-nav{display:flex;gap:9px;pointer-events:auto}
+  .station-nav button{border:1px solid rgba(255,233,210,.18);background:rgba(25,15,10,.52);color:#f7ead6;border-radius:999px;padding:10px 16px;font-family:'Baloo 2',sans-serif;font-size:12px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 25px rgba(0,0,0,.16);transition:.2s ease}
+  .station-nav button:hover{transform:translateY(-1px);background:rgba(35,22,15,.66);border-color:rgba(255,233,210,.3)}
+  .support-card{width:260px;padding:14px 16px 13px;border-radius:15px;background:rgba(24,14,9,.78);border:1px solid rgba(255,225,190,.16);box-shadow:0 14px 40px rgba(0,0,0,.22);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#f7ead6;text-align:center;pointer-events:auto}
+  .support-title{font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:600;line-height:1.25}
+  .support-sub{font-family:'Baloo 2',sans-serif;font-size:10px;opacity:.76;margin-top:2px}
+  .support-actions{display:flex;justify-content:center;gap:8px;margin-top:10px}
+  .support-actions button{border:0;border-radius:999px;background:#e7a82d;color:#1c1208;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:11px;padding:7px 14px;cursor:pointer}
+  .support-actions button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .memory-cta{pointer-events:auto;align-self:flex-end;margin-right:2px;padding:10px 15px;border-radius:999px;border:1px solid rgba(255,233,210,.18);background:rgba(25,15,10,.52);color:#f7ead6;font-family:'Baloo 2',sans-serif;font-size:12px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .memory-cta:hover{background:rgba(35,22,15,.66)}
+  .station-play{position:fixed;z-index:24;left:50%;top:26.5%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;border:3px solid #e8b63c;background:rgba(13,10,9,.78);box-shadow:0 0 0 3px rgba(205,35,55,.9),0 12px 35px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#f7ead6}
+  .station-play svg{width:42px;height:42px;fill:currentColor;margin-left:4px}
+  .station-play.is-playing svg{margin-left:0}
+  .station-toast{position:fixed;z-index:80;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;pointer-events:none;padding:9px 14px;border-radius:999px;background:rgba(18,11,8,.88);border:1px solid rgba(255,233,210,.15);color:#f7ead6;font:11px 'Baloo 2',sans-serif;transition:.25s ease;backdrop-filter:blur(10px)}
+  .station-toast.show{opacity:1;transform:translate(-50%,0)}
+  .songs-panel{position:fixed;z-index:75;right:28px;top:112px;width:min(360px,calc(100vw - 56px));max-height:55vh;overflow:auto;display:none;padding:15px;border-radius:17px;background:rgba(22,13,9,.92);border:1px solid rgba(255,233,210,.15);box-shadow:0 20px 60px rgba(0,0,0,.35);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#f7ead6}
+  .songs-panel.open{display:block}
+  .songs-panel h4{font:600 15px 'Baloo 2',sans-serif;margin-bottom:10px}
+  .songs-current{font:12px 'Baloo 2',sans-serif;line-height:1.5;opacity:.82}
+  .songs-actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+  .songs-actions button{border:1px solid rgba(255,233,210,.15);background:rgba(255,255,255,.06);color:#f7ead6;border-radius:999px;padding:7px 10px;font:11px 'Baloo 2',sans-serif;cursor:pointer}
+  .songs-close{position:absolute;right:10px;top:8px;border:0;background:none;color:#f7ead6;font-size:20px;cursor:pointer}
+  @media(max-width:900px){
+    .station-top-left{left:16px;top:18px}.station-clock{font-size:22px}.station-date{font-size:9px;letter-spacing:1.4px}.listener-row{margin-top:12px;font-size:13px}.creator-chip{margin-top:9px}
+    .station-top-right{right:16px;top:17px;width:auto}.support-card{display:none}.station-nav{gap:6px}.station-nav button{padding:8px 11px;font-size:10px}.memory-cta{display:none}
+    .station-play{top:18%;width:70px;height:70px}.station-play svg{width:32px;height:32px}
+  }
+  @media(max-width:600px){
+    .station-top-left{left:12px;top:12px}.station-clock{font-size:19px}.station-date{font-size:8px}.listener-row{font-size:11px;margin-top:8px}.listener-dot{width:7px;height:7px}.creator-chip{font-size:9px;padding:5px 8px}
+    .station-top-right{right:10px;top:10px}.station-nav button{padding:7px 9px;font-size:9px}.station-play{top:16%;width:58px;height:58px;border-width:2px}.station-play svg{width:26px;height:26px}
+    .songs-panel{right:10px;top:74px;width:calc(100vw - 20px);max-height:48vh}
+  }
+
 </style>
 </head>
 <body>
+
+  <div class="station-top-left" aria-label="स्टेशन जानकारी">
+    <div class="station-clock" id="stationClock">8:19 am</div>
+    <div class="station-date" id="stationDate">SUNDAY, 16 AUGUST · IST</div>
+    <div class="listener-row"><span class="listener-dot"></span><span class="listener-number" id="listenerNumber">100</span><span class="listener-label">on board</span></div>
+    <a class="creator-chip" href="https://www.instagram.com/ekaurduniya/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @ekaurduniya">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm8.9 1.5a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+      build by @ekaurduniya
+    </a>
+  </div>
+
+  <div class="station-top-right">
+    <div class="station-nav">
+      <button type="button" id="stationPlaylists">Playlists</button>
+      <button type="button" id="stationAllSongs">All songs</button>
+    </div>
+    <div class="support-card">
+      <div class="support-title">Help us keep this station running.</div>
+      <div class="support-sub">Your support means a lot.</div>
+      <div class="support-actions">
+        <button type="button" id="razorpayBtn">Razorpay</button>
+        <button type="button" id="kofiBtn">Ko-fi</button>
+      </div>
+    </div>
+    <button class="memory-cta" type="button" id="memoryCta">Click here to enjoy your old school memories</button>
+  </div>
+
+  <button class="station-play" id="stationPlay" type="button" aria-label="Music play/pause">
+    <svg id="stationPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  </button>
+
+  <div class="songs-panel" id="songsPanel">
+    <button class="songs-close" id="songsClose" type="button" aria-label="Close">×</button>
+    <h4>🎵 पुरानी यादों के गाने</h4>
+    <div class="songs-current" id="songsCurrent">Playlist player नीचे है। यहाँ से playlist खोल सकते हो या अभी चल रहा गाना सुन सकते हो।</div>
+    <div class="songs-actions">
+      <button type="button" id="openPlaylistBtn">Open playlist</button>
+      <button type="button" id="playCurrentBtn">Play current</button>
+    </div>
+  </div>
+
+  <div class="station-toast" id="stationToast"></div>
+
 
   <audio id="chaiSipAudio" preload="auto" src="chai-sip.m4a"></audio>
   <div class="chai-corner" id="chaiCorner" role="button" tabindex="0"
@@ -1590,6 +1680,79 @@
 
   const PLAYLIST_ID = "PLq-bT4s33RYADNkcClDkLPovaKJx0HTDM";
   const FIRST_VIDEO_ID = "mZwJs1YQ-Wk";
+
+
+  /* ===== Station chrome: clock, listeners, playlist buttons ===== */
+  const stationClock = document.getElementById('stationClock');
+  const stationDate = document.getElementById('stationDate');
+  const listenerNumber = document.getElementById('listenerNumber');
+  const stationPlay = document.getElementById('stationPlay');
+  const stationPlayIcon = document.getElementById('stationPlayIcon');
+  const stationPlaylists = document.getElementById('stationPlaylists');
+  const stationAllSongs = document.getElementById('stationAllSongs');
+  const memoryCta = document.getElementById('memoryCta');
+  const songsPanel = document.getElementById('songsPanel');
+  const songsClose = document.getElementById('songsClose');
+  const openPlaylistBtn = document.getElementById('openPlaylistBtn');
+  const playCurrentBtn = document.getElementById('playCurrentBtn');
+  const songsCurrent = document.getElementById('songsCurrent');
+  const stationToast = document.getElementById('stationToast');
+  const razorpayBtn = document.getElementById('razorpayBtn');
+  const kofiBtn = document.getElementById('kofiBtn');
+
+  function updateStationClock(){
+    const now = new Date();
+    stationClock.textContent = new Intl.DateTimeFormat('en-IN',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'}).format(now).toLowerCase();
+    stationDate.textContent = new Intl.DateTimeFormat('en-IN',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Kolkata'}).format(now).toUpperCase() + ' · IST';
+  }
+  updateStationClock();
+  setInterval(updateStationClock,1000);
+
+  let onBoardCount = Math.max(100, Number(localStorage.getItem('puraniKitabOnBoard') || 100));
+  listenerNumber.textContent = onBoardCount.toLocaleString('en-IN');
+  setInterval(()=>{
+    const delta = Math.floor(Math.random()*5)-1;
+    onBoardCount = Math.max(100, onBoardCount + delta);
+    listenerNumber.textContent = onBoardCount.toLocaleString('en-IN');
+    try{localStorage.setItem('puraniKitabOnBoard',String(onBoardCount));}catch(e){}
+  },10000);
+
+  function toast(message){
+    stationToast.textContent = message;
+    stationToast.classList.add('show');
+    clearTimeout(window.__stationToastTimer);
+    window.__stationToastTimer=setTimeout(()=>stationToast.classList.remove('show'),1800);
+  }
+  function toggleSongsPanel(){
+    songsPanel.classList.toggle('open');
+    if(songsPanel.classList.contains('open')) songsCurrent.textContent=currentTrackTitle ? `अभी चल रहा है: ${currentTrackTitle}` : 'Playlist player नीचे है। गाना शुरू होते ही उसका नाम यहाँ दिखेगा।';
+  }
+  stationPlaylists.onclick=toggleSongsPanel;
+  songsClose.onclick=()=>songsPanel.classList.remove('open');
+  stationAllSongs.onclick=()=>window.open(`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`,'_blank','noopener,noreferrer');
+  openPlaylistBtn.onclick=()=>window.open(`https://www.youtube.com/playlist?list=${PLAYLIST_ID}`,'_blank','noopener,noreferrer');
+  playCurrentBtn.onclick=()=>{ if(ytPlayer && typeof ytPlayer.playVideo==='function'){ ytPlayer.playVideo(); songsPanel.classList.remove('open'); } };
+  memoryCta.onclick=()=>diaryOpen();
+  stationPlay.onclick=()=>{
+    if(!ytPlayer || typeof ytPlayer.getPlayerState!=='function'){toast('Music player अभी load हो रहा है…');return;}
+    const state=ytPlayer.getPlayerState();
+    if(state===YT.PlayerState.PLAYING) ytPlayer.pauseVideo(); else ytPlayer.playVideo();
+  };
+  razorpayBtn.onclick=()=>toast('Razorpay link यहाँ add करना है।');
+  kofiBtn.onclick=()=>toast('Ko-fi link यहाँ add करना है।');
+
+  const __originalStateChange = onPlayerStateChange;
+  onPlayerStateChange = function(e){
+    __originalStateChange(e);
+    if(e.data===YT.PlayerState.PLAYING){
+      stationPlayIcon.innerHTML=ICON_PAUSE;
+      stationPlay.classList.add('is-playing');
+    }else{
+      stationPlayIcon.innerHTML=ICON_PLAY;
+      stationPlay.classList.remove('is-playing');
+    }
+    if(songsPanel.classList.contains('open')) songsCurrent.textContent=currentTrackTitle ? `अभी चल रहा है: ${currentTrackTitle}` : 'Playlist player नीचे है। गाना शुरू होते ही उसका नाम यहाँ दिखेगा।';
+  };
 
   const ppThumb = document.getElementById('ppThumb');
   const ppTitle = document.getElementById('ppTitle');
